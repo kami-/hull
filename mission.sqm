@@ -111,8 +111,8 @@ class Mission
 	randomSeed=3165154;
 	class Intel
 	{
-		briefingName="ark-framework";
-		briefingDescription="ark-framework";
+		briefingName="hull-framework";
+		briefingDescription="hull-framework";
 		startWeather=0.25;
 		forecastWeather=0.25;
 		year=2008;
