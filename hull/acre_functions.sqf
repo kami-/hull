@@ -17,44 +17,44 @@
 
 
 
-parsingNamespace setVariable ["hull_acre_fnc_preInit", {
+hull_acre_fnc_preInit = {
     hull_acre_isInitialized = false;
     if (!isDedicated) then {
-        [] spawn PNS_GVAR(hull_acre_fnc_setPlayerFrequencies);
+        [] spawn hull_acre_fnc_setPlayerFrequencies;
     } else {
         hull_acre_isInitialized = true;
     };
-}];
+};
 
-parsingNamespace setVariable ["hull_acre_fnc_setPlayerFrequencies", {
+hull_acre_fnc_setPlayerFrequencies = {
     waitUntil {
         !isNull player;
     };
     waitUntil {
         !isNil {acre_sys_radio_currentRadioList};
     };
-    [] call PNS_GVAR(hull_acre_fnc_setFrequencies);
+    [] call hull_acre_fnc_setFrequencies;
     hull_acre_isInitialized = true;
-}];
+};
 
-parsingNamespace setVariable ["hull_acre_fnc_setFrequencies", {
-    [HULL_ACRE_SHORTRANGE_DEFAULT, HULL_ACRE_SHORTRANGE_RADIOS, HULL_ACRE_SHORTRANGE_BASEFREQ, HULL_ACRE_CHANNELSTEP] call PNS_GVAR(hull_acre_fnc_setChannels);
-    [HULL_ACRE_LONGRANGE_DEFAULT, HULL_ACRE_LONGRANGE_RADIOS, HULL_ACRE_LONGRANGE_BASEFREQ, HULL_ACRE_CHANNELSTEP] call PNS_GVAR(hull_acre_fnc_setChannels);
-}];
+hull_acre_fnc_setFrequencies = {
+    [HULL_ACRE_SHORTRANGE_DEFAULT, HULL_ACRE_SHORTRANGE_RADIOS, HULL_ACRE_SHORTRANGE_BASEFREQ, HULL_ACRE_CHANNELSTEP] call hull_acre_fnc_setChannels;
+    [HULL_ACRE_LONGRANGE_DEFAULT, HULL_ACRE_LONGRANGE_RADIOS, HULL_ACRE_LONGRANGE_BASEFREQ, HULL_ACRE_CHANNELSTEP] call hull_acre_fnc_setChannels;
+};
 
-parsingNamespace setVariable ["hull_acre_fnc_setChannels", {
+hull_acre_fnc_setChannels = {
     FUN_ARGS_4(_defaultRadio,_radios,_baseFreq,_channelStep);
 
     private ["_sideStep", "_channelCount", "_calculatedChannels"];
-    _sideStep = [player] call PNS_GVAR(hull_acre_fnc_getSideStep);
+    _sideStep = [player] call hull_acre_fnc_getSideStep;
     _channelCount = count ([_defaultRadio] call acre_api_fnc_getDefaultChannels);
-    _calculatedChannels = [_channelCount, _baseFreq, _channelStep, _sideStep] call PNS_GVAR(hull_acre_fnc_getCalculatedChannels);
+    _calculatedChannels = [_channelCount, _baseFreq, _channelStep, _sideStep] call hull_acre_fnc_getCalculatedChannels;
     {
         [_x, _calculatedChannels] call acre_api_fnc_setDefaultChannels;
     } foreach _radios;
-}];
+};
 
-parsingNamespace setVariable ["hull_acre_fnc_getCalculatedChannels", {
+hull_acre_fnc_getCalculatedChannels = {
     FUN_ARGS_4(_channelCount,_baseFreq,_channelStep,_sideStep);
 
     private ["_newChannels"];
@@ -64,9 +64,9 @@ parsingNamespace setVariable ["hull_acre_fnc_getCalculatedChannels", {
     };
 
     _newChannels;
-}];
+};
 
-parsingNamespace setVariable ["hull_acre_fnc_getSideStep", {
+hull_acre_fnc_getSideStep = {
     FUN_ARGS_1(_unit);
     call {
         if (side player == WEST) exitWith {HULL_ACRE_SIDE_WESTSTEP};
@@ -74,4 +74,4 @@ parsingNamespace setVariable ["hull_acre_fnc_getSideStep", {
         if (side player == RESISTANCE) exitWith {HULL_ACRE_SIDE_RESISTANCESTEP};
         HULL_ACRE_SIDE_DEFAULTSTEP;
     };
-}];
+};

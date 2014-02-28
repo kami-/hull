@@ -173,6 +173,3 @@
 #define AS_ARRAY_3(VAL1,VAL2,VAL3) [VAL1,VAL2,VAL3]
 #define AS_ARRAY_4(VAL1,VAL2,VAL3,VAL4) [VAL1,VAL2,VAL3,VAL4]
 #define AS_ARRAY_5(VAL1,VAL2,VAL3,VAL4,VAL5) [VAL1,VAL2,VAL3,VAL4,VAL5]
-
-// Gets variable from parsingNamespace.
-#define PNS_GVAR(VAR) (parsingNamespace getVariable #VAR)
