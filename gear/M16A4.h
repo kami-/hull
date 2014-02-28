@@ -266,7 +266,7 @@ class M16A4 {
         weapons[] = {"M24_des_EP1", "M9SD"};
         magazines[] = {
             {"5Rnd_762x51_M24",  2},
-            {"15Rnd_9x19_M9SD,",  5},
+            {"15Rnd_9x19_M9SD",  5},
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
         };

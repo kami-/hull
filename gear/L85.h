@@ -266,7 +266,7 @@ class L85 {
         weapons[] = {"BAF_LRR_scoped", "M9SD"};
         magazines[] = {
             {"5Rnd_86x70_L115A1",  2},
-            {"15Rnd_9x19_M9SD,",  5},
+            {"15Rnd_9x19_M9SD",  5},
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
         };

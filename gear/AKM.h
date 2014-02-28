@@ -263,7 +263,7 @@ class AKM {
         weapons[] = {"ACE_SVD_Bipod", "MakarovSD"};
         magazines[] = {
             {"10Rnd_762x54_SVD",  2},
-            {"8Rnd_9x18_MakarovSD,",  5},
+            {"8Rnd_9x18_MakarovSD",  5},
             {"HandGrenade_East", 1},
             {"SmokeShell", 1}
         };
