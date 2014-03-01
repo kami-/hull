@@ -19,17 +19,12 @@
 
 hull_acre_fnc_preInit = {
     hull_acre_isInitialized = false;
-    if (!isDedicated) then {
-        [] spawn hull_acre_fnc_setPlayerFrequencies;
-    } else {
+    if (isDedicated) then {
         hull_acre_isInitialized = true;
     };
 };
 
 hull_acre_fnc_setPlayerFrequencies = {
-    waitUntil {
-        !isNull player;
-    };
     waitUntil {
         !isNil {acre_sys_radio_currentRadioList};
     };
