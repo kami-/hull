@@ -975,7 +975,7 @@ class Mission
 					leader=1;
 					rank="CORPORAL";
 					skill=0.5;
-					init="[this, [""FTL""], [""C2"", ""ColorGreen""]] call hull_common_fnc_unitInit;";
+					init="[this, [""FTL""], [""C3"", ""ColorGreen""]] call hull_common_fnc_unitInit;";
 					description="USMC Charlie 3 Fireteam Leader";
 				};
 				class Item1
@@ -2104,7 +2104,7 @@ class Mission
 					leader=1;
 					rank="CORPORAL";
 					skill=0.5;
-					init="GrpUSMCD_TH4 = group this; nul = [""p"",this] call f_fnc_assignGear;";
+					init="[this, [""P""], [""TH4"", ""ColorOrange""]] call hull_common_fnc_unitInit;";
 					description="USMC Transport Helo 4 Pilot";
 				};
 				class Item1
@@ -7921,7 +7921,7 @@ class Mission
 					leader=1;
 					rank="CORPORAL";
 					skill=0.5;
-					init="GrpUSMC_TH4 = group this; nul = [""p"",this] call f_fnc_assignGear; ";
+					init="[this, [""P""], [""TH4"", ""ColorOrange""]] call hull_common_fnc_unitInit;";
 					description="USMC Transport Helo 4 Pilot";
 				};
 				class Item1
@@ -13787,7 +13787,7 @@ class Mission
 					leader=1;
 					rank="CORPORAL";
 					skill=0.5;
-					init="GrpCDF_TH4 = group this; nul = [""p"",this] call f_fnc_assignGear; ";
+					init="[this, [""P""], [""TH4"", ""ColorOrange""]] call hull_common_fnc_unitInit;";
 					description="CDF Transport Helo 4 Pilot";
 				};
 				class Item1
@@ -15726,7 +15726,7 @@ class Mission
 					leader=1;
 					rank="CORPORAL";
 					skill=0.5;
-					init="GrpA2Ins_TH4 = group this; nul = [""p"",this] call f_fnc_assignGear; ";
+					init="[this, [""P""], [""TH4"", ""ColorOrange""]] call hull_common_fnc_unitInit;";
 					description="ChDKZ Insurgents Transport Helo 4 Pilot";
 				};
 				class Item1
@@ -19586,7 +19586,7 @@ class Mission
 					leader=1;
 					rank="CORPORAL";
 					skill=0.5;
-					init="GrpBAF_TH4 = group this; nul = [""p"",this] call f_fnc_assignGear; ";
+					init="[this, [""P""], [""TH4"", ""ColorOrange""]] call hull_common_fnc_unitInit;";
 					description="British Army Transport Helo 4 Pilot";
 				};
 				class Item1
@@ -25403,7 +25403,7 @@ class Mission
 					leader=1;
 					rank="CORPORAL";
 					skill=0.5;
-					init="GrpUS_TH4 = group this; nul = [""p"",this] call f_fnc_assignGear; ";
+					init="[this, [""P""], [""TH4"", ""ColorOrange""]] call hull_common_fnc_unitInit;";
 					description="US Army Transport Helo 4 Pilot";
 				};
 				class Item1
