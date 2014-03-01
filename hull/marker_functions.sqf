@@ -7,66 +7,26 @@
 
 
 hull_marker_fnc_preInit = {
-    if (isServer || !isDedicated) then {
-        hull_groupMarkers = [];
-        hull_medicMarkers = [];
-        hull_fireTeamMarkers = [];
-        [] spawn hull_marker_fnc_updateAllMarkers;
+    if (!isDedicated) then {
+        hull_marker_rawMarkers = [];
+        hull_marker_groups = [];
+        hull_marker_medics = [];
+        hull_marker_fireTeam = [];
     };
 };
 
-hull_marker_fnc_updateAllMarkers = {
-    private ["_hull_groupMarkers", "_hull_medicMarkers", "_hull_fireTeamMarkers"];
-    _hull_groupMarkers = hull_groupMarkers;
-    _hull_medicMarkers = hull_medicMarkers;
-    _hull_fireTeamMarkers = hull_fireTeamMarkers;
-    waitUntil {
-        [_hull_groupMarkers] call hull_marker_fnc_updateGroupMarkers;
-        [_hull_medicMarkers] call hull_marker_fnc_updateMedicMarkers;
-        [_hull_fireTeamMarkers] call hull_marker_fnc_updateFireTeamMarkers;
-        sleep 4;
-        false;
-    };
+hull_marker_fnc_initMarker = {
+    FUN_ARGS_3(_unit,_markerText,_markerColor);
+
+    PUSH(hull_marker_rawMarkers, AS_ARRAY_4(_unit,_unit getVariable "hull_gear_class",_markerText,_markerColor));
 };
 
-hull_marker_fnc_updateGroupMarkers = {
-    FUN_ARGS_1(_hull_groupMarkers);
-
+hull_marker_fnc_addMarkers = {
     {
-        private ["_markerName", "_group"];
-        _markerName = _x select 0;
-        _group = _x select 1;
-        if ({alive _x} count units _group > 0) then {
-            _markerName setMarkerPosLocal getPosASL leader _group;
-        }
-    } foreach _hull_groupMarkers;
-};
-
-hull_marker_fnc_updateMedicMarkers = {
-    FUN_ARGS_1(_hull_medicMarkers);
-
-    {
-        private ["_markerName", "_unit"];
-        _markerName = _x select 0;
-        _unit = _x select 1;
-        if (alive _unit) then {
-            _markerName setMarkerPosLocal getPosASL _unit;
-        }
-    } foreach _hull_medicMarkers;
-};
-
-hull_marker_fnc_updateFireTeamMarkers = {
-    FUN_ARGS_1(_hull_fireTeamMarkers);
-
-    {
-        private ["_markerName", "_unit"];
-        _markerName = _x select 0;
-        _unit = _x select 1;
-        if (alive _unit) then {
-            _markerName setMarkerPosLocal getPosASL _unit;
-            _markerName setMarkerDirLocal getDir _unit;
-        }
-    } foreach _hull_fireTeamMarkers;
+        _x call hull_marker_fnc_addMarker;
+    } foreach hull_marker_rawMarkers;
+    hull_marker_rawMarkers = nil;
+    [player] call hull_marker_fnc_addFireTeamMarkers;
 };
 
 hull_marker_fnc_addMarker = {
@@ -75,21 +35,78 @@ hull_marker_fnc_addMarker = {
     private "_markerName";
     call {
         if (toLower _gearClass == "ftl") exitWith {
-            _markerName = format ["hull_groupMarker_%1_%2", _markerText, group _unit];
-            [_markerName, getPosATL _unit, "ICON", "b_recon", _markerColor, _markerText] call hull_marker_fnc_createMarker;
             (group _unit) setGroupId [_markerText];
-            PUSH(hull_groupMarkers,AS_ARRAY_2(_markerName,group _unit));
+            _markerName = format ["hull_marker_group_%1_%2", _markerText, group _unit];
+            [_markerName, getPosATL _unit, "ICON", "b_recon", _markerColor, _markerText] call hull_marker_fnc_createMarker;
+            (group _unit) setVariable ["hull_marker_group", _markerName];
+            PUSH(hull_marker_groups,group _unit);
         };
         if (toLower _gearClass == "m") exitWith {
-            _markerName = format ["hull_medicMarker_%1_%2", _markerText, _unit];
+            _markerName = format ["hull_marker_medic_%1_%2", _markerText, _unit];
             [_markerName, getPosATL _unit, "ICON", "b_med", _markerColor, _markerText, HULL_MARKER_MEDIC_SIZE] call hull_marker_fnc_createMarker;
-            PUSH(hull_medicMarkers,AS_ARRAY_2(_markerName,_unit));
+            _unit setVariable ["hull_marker_medic", _markerName];
+            PUSH(hull_marker_medics,_unit);
         };
-        _markerName = format ["hull_groupMarker_%1_%2", _markerText, group _unit];
-        [_markerName, getPosATL _unit, "ICON", "b_empty", _markerColor, _markerText] call hull_marker_fnc_createMarker;
         (group _unit) setGroupId [_markerText];
-        PUSH(hull_groupMarkers,AS_ARRAY_2(_markerName,group _unit));
+        _markerName = format ["hull_marker_group_%1_%2", _markerText, group _unit];
+        [_markerName, getPosATL _unit, "ICON", "b_empty", _markerColor, _markerText] call hull_marker_fnc_createMarker;
+        (group _unit) setVariable ["hull_marker_group", _markerName];
+        PUSH(hull_marker_groups,group _unit);
     };
+};
+
+hull_marker_fnc_updateAllMarkers = {
+    private ["_groups", "_medics", "_fireTeam"];
+    _groups = hull_marker_groups;
+    _medics = hull_marker_medics;
+    _fireTeam = hull_marker_fireTeam;
+    waitUntil {
+        [_groups] call hull_marker_fnc_updateGroupMarkers;
+        [_medics] call hull_marker_fnc_updateMedicMarkers;
+        [_fireTeam] call hull_marker_fnc_updateFireTeamMarkers;
+        sleep 4;
+        false;
+    };
+};
+
+hull_marker_fnc_updateGroupMarkers = {
+    FUN_ARGS_1(_groups);
+
+    {
+        private ["_group", "_markerName"];
+        _group = _x;
+        _markerName = _group getVariable "hull_marker_group";
+        if ({alive _x} count units _group > 0) then {
+            _markerName setMarkerPosLocal getPosASL leader _group;
+        }
+    } foreach _groups;
+};
+
+hull_marker_fnc_updateMedicMarkers = {
+    FUN_ARGS_1(_medics);
+
+    {
+        private ["_medic", "_markerName"];
+        _medic = _x;
+        _markerName = _medic getVariable "hull_marker_medic";
+        if (alive _medic) then {
+            _markerName setMarkerPosLocal getPosASL _medic;
+        }
+    } foreach _medics;
+};
+
+hull_marker_fnc_updateFireTeamMarkers = {
+    FUN_ARGS_1(_fireTeam);
+
+    {
+        private ["_unit", "_markerName"];
+        _unit = _x;
+        _markerName = _unit getVariable "hull_marker_fireTeam";
+        if (alive _unit) then {
+            _markerName setMarkerPosLocal getPosASL _unit;
+            _markerName setMarkerDirLocal getDir _unit;
+        }
+    } foreach _fireTeam;
 };
 
 hull_marker_fnc_addFireTeamMarkers = {
@@ -103,9 +120,10 @@ hull_marker_fnc_addFireTeamMarkers = {
 hull_marker_fnc_addFireTeamMarker = {
     FUN_ARGS_1(_unit);
 
-    _markerName = format ["hull_fireTeamMarker_%1_%2", _markerText, _unit];
+    _markerName = format ["hull_marker_fireTeam_%1_%2", _markerText, _unit];
     [_markerName, getPosATL _unit, "ICON", "mil_triangle", HULL_MARKER_FIRETEAM_COLOR, "", HULL_MARKER_FIRETEAM_SIZE] call hull_marker_fnc_createMarker;
-    PUSH(hull_fireTeamMarkers,AS_ARRAY_2(_markerName,_unit));
+    _unit setVariable ["hull_marker_fireTeam", _markerName];
+    PUSH(hull_marker_fireTeam,_unit);
 };
 
 hull_marker_fnc_createMarker = {
