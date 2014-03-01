@@ -6,15 +6,18 @@ hull_gear_fnc_assign = {
     if (!([_unit, _class, _manualTemplate] call hull_gear_fnc_validateTemplate)) then {
         private "_template";
         _template = [faction _unit, _manualTemplate] call hull_gear_fnc_getTemplate;
-        [_unit] call hull_gear_fnc_assignInit;
+        [_unit, _class] call hull_gear_fnc_assignInit;
         [_unit, _class, _template] call hull_gear_fnc_assignTemplate;
     };
 };
 
 hull_gear_fnc_assignInit = {
+    FUN_ARGS_2(_unit,_class);
+
+    _unit setVariable ["hull_gear_class", _class, true];
     removeAllWeapons _unit;
     removeBackpack _unit;
-    _unit setVariable ["ace_sys_wounds_no_medical_gear", true];
+    _unit setVariable ["ace_sys_wounds_no_medical_gear", true, false];
     _unit addWeapon "ACE_Earplugs";
 };
 
