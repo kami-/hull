@@ -14,10 +14,10 @@ hull_gear_fnc_assign = {
 hull_gear_fnc_assignInit = {
     FUN_ARGS_2(_unit,_class);
 
-    _unit setVariable ["hull_gear_class", _class];
+    _unit setVariable ["hull_gear_class", _class, true];
     removeAllWeapons _unit;
     removeBackpack _unit;
-    _unit setVariable ["ace_sys_wounds_no_medical_gear", true];
+    _unit setVariable ["ace_sys_wounds_no_medical_gear", true, false];
     _unit addWeapon "ACE_Earplugs";
 };
 
