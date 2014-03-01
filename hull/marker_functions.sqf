@@ -23,7 +23,9 @@ hull_marker_fnc_initMarker = {
 
 hull_marker_fnc_addMarkers = {
     {
-        _x call hull_marker_fnc_addMarker;
+        if (side player == side (_x select 0)) then {
+            _x call hull_marker_fnc_addMarker;
+        };
     } foreach hull_marker_rawMarkers;
     hull_marker_rawMarkers = nil;
     [player] call hull_marker_fnc_addFireTeamMarkers;
