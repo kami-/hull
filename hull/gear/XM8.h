@@ -1,6 +1,6 @@
-class M16A4 {
+class XM8 {
     class Rifleman {
-        weapons[] = {"ACE_M16A4_Iron"};
+        weapons[] = {"m8_carbine"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 9},
             {"HandGrenade_West", 2},
@@ -19,7 +19,7 @@ class M16A4 {
     };
 
     class Leader : Rifleman {
-        weapons[] = {"ACE_M16A4_CCO_GL"};
+        weapons[] = {"m8_carbineGL"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
             {"ACE_30Rnd_556x45_T_Stanag", 3},
@@ -110,11 +110,11 @@ class M16A4 {
     };
 
     class RAT : Rifleman {
-        weapons[] = {"ACE_M4A1_C", "M136"};
+        weapons[] = {"m8_carbine", "M136"};
     };
 
     class MMGG : Rifleman {
-        weapons[] = {"ACE_M60"};
+        weapons[] = {"M240"};
         magazines[] = {
             {"100Rnd_762x51_M240", 5},
             {"SmokeShell", 1}
@@ -139,7 +139,7 @@ class M16A4 {
     };
 
     class HMGG : Rifleman {
-        weapons[] = {"ACE_M4A1_C", "ACE_M2HBProxy"};
+        weapons[] = {"m8_carbine", "ACE_M2HBProxy"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
             {"SmokeShell", 1}
@@ -150,7 +150,7 @@ class M16A4 {
     };
 
     class HMGAG : Rifleman {
-        weapons[] = {"ACE_M4A1_C", "ACE_M3TripodProxy"};
+        weapons[] = {"m8_carbine", "ACE_M3TripodProxy"};
         magazines[] = {
             {"30Rnd_556x45_Stanag",  8},
             {"HandGrenade_West", 1},
@@ -178,10 +178,10 @@ class M16A4 {
     };
 
     class MATG : Rifleman {
-        weapons[] = {"ACE_M4A1_C", "MAAWS"};
+        weapons[] = {"m8_carbine", "SMAW"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
-            {"MAAWS_HEAT", 2},
+            {"SMAW_HEAA", 2},
             {"SmokeShell", 1},
             {"ACE_SMAW_Spotting", 3}
         };
@@ -193,15 +193,14 @@ class M16A4 {
     class MATAG : Rifleman {
         magazines[] = {
             {"30Rnd_556x45_Stanag",  8},
-            {"MAAWS_HEAT", 1},
+            {"SMAW_HEAA", 1},
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
         };
         ruckMagazines[] = {
             {"30Rnd_556x45_Stanag", 2},
             {"ACE_30Rnd_556x45_T_Stanag", 2},
-			{"MAAWS_HE", 1},
-            {"MAAWS_HEAT", 2}
+            {"SMAW_HEAA", 2}
         };
         items[] = {"ACRE_PRC343", "Binocular_Vector"};
     };
@@ -209,23 +208,22 @@ class M16A4 {
     class MATAC : Rifleman {
         magazines[] = {
             {"30Rnd_556x45_Stanag", 8},
-            {"MAAWS_HEAT", 1},
-            {"MAAWS_HE", 1},
+            {"SMAW_HEAA", 1},
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
         };
         ruckMagazines[] = {
             {"30Rnd_556x45_Stanag", 2},
             {"ACE_30Rnd_556x45_T_Stanag", 2},
-            {"MAAWS_HEAT", 2}
+            {"SMAW_HEAA", 2}
         };
     };
 
     class HATG : Rifleman {
-        weapons[] = {"ACE_M4A1_C", "ACE_Javelin_Direct"};
+        weapons[] = {"m8_carbine", "ACE_Javelin_Direct"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
-            {"MAAWS_HEAT", 2},
+            {"SMAW_HEAA", 2},
             {"SmokeShell", 1}
         };
         ruckMagazines[] = {
@@ -234,7 +232,7 @@ class M16A4 {
     };
 
     class HATAG : Rifleman {
-        weapons[] = {"ACE_M4A1_C", "ACE_Javelin_Direct"};
+        weapons[] = {"m8_carbine", "ACE_Javelin_Direct"};
         magazines[] = {
             {"30Rnd_556x45_Stanag",  8},
             {"HandGrenade_West", 1},
@@ -249,7 +247,7 @@ class M16A4 {
     };
 
     class HATAC : Rifleman {
-        weapons[] = {"ACE_M4A1_C", "ACE_Javelin_Direct"};
+        weapons[] = {"m8_carbine", "ACE_Javelin_Direct"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 8},
             {"HandGrenade_West", 1},
@@ -297,7 +295,7 @@ class M16A4 {
     class VD : Crew {
     };
 
-    class PC : Crew {
+    class P : Crew {
         items[] = {"ACRE_PRC343", "ACRE_PRC117F"};
     };
 

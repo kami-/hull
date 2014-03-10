@@ -1,6 +1,6 @@
-class M4SOC {
+class HK416 {
     class Rifleman {
-        weapons[] = {"ACE_SOC_M4A1_Aim"};
+        weapons[] = {"ACE_HK416_D14_COMPM3"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 9},
             {"HandGrenade_West", 2},
@@ -19,7 +19,7 @@ class M4SOC {
     };
 
     class Leader : Rifleman {
-        weapons[] = {"ACE_SOC_M4A1_GL_AIMPOINT"};
+        weapons[] = {"ACE_HK416_D14_COMPM3_M320"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
             {"ACE_30Rnd_556x45_T_Stanag", 3},
@@ -91,10 +91,10 @@ class M4SOC {
     };
 
     class AR : Rifleman {
-        weapons[] = {"M249_EP1"};
+        weapons[] = {"ACE_M27_IAR"};
         magazines[] = {
-            {"100Rnd_556x45_M249", 3},
-            {"ACE_100Rnd_556x45_T_M249", 3},
+            {"100Rnd_556x45_BetaCMag", 3},
+            {"100Rnd_556x45_BetaCMag", 3},
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
         };
@@ -102,15 +102,15 @@ class M4SOC {
 
     class AAR : Rifleman {
         ruckMagazines[] = {
-            {"100Rnd_556x45_M249", 2},
-            {"ACE_100Rnd_556x45_T_M249", 2},
+            {"100Rnd_556x45_BetaCMag", 2},
+            {"100Rnd_556x45_BetaCMag", 2},
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
         };
     };
 
     class RAT : Rifleman {
-        weapons[] = {"ACE_SOC_M4A1_Aim", "M136"};
+        weapons[] = {"ACE_HK416_D10", "M136"};
     };
 
     class MMGG : Rifleman {
@@ -139,7 +139,7 @@ class M4SOC {
     };
 
     class HMGG : Rifleman {
-        weapons[] = {"ACE_SOC_M4A1_Aim", "ACE_M2HBProxy"};
+        weapons[] = {"ACE_HK416_D10", "ACE_M2HBProxy"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
             {"SmokeShell", 1}
@@ -150,7 +150,7 @@ class M4SOC {
     };
 
     class HMGAG : Rifleman {
-        weapons[] = {"ACE_SOC_M4A1_Aim", "ACE_M3TripodProxy"};
+        weapons[] = {"ACE_HK416_D10", "ACE_M3TripodProxy"};
         magazines[] = {
             {"30Rnd_556x45_Stanag",  8},
             {"HandGrenade_West", 1},
@@ -178,7 +178,7 @@ class M4SOC {
     };
 
     class MATG : Rifleman {
-        weapons[] = {"ACE_SOC_M4A1_Aim", "SMAW"};
+        weapons[] = {"ACE_HK416_D10", "SMAW"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
             {"SMAW_HEAA", 2},
@@ -220,7 +220,7 @@ class M4SOC {
     };
 
     class HATG : Rifleman {
-        weapons[] = {"ACE_SOC_M4A1_Aim", "ACE_Javelin_Direct"};
+        weapons[] = {"ACE_HK416_D10", "ACE_Javelin_Direct"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
             {"SMAW_HEAA", 2},
@@ -232,7 +232,7 @@ class M4SOC {
     };
 
     class HATAG : Rifleman {
-        weapons[] = {"ACE_SOC_M4A1_Aim", "ACE_Javelin_Direct"};
+        weapons[] = {"ACE_HK416_D10", "ACE_Javelin_Direct"};
         magazines[] = {
             {"30Rnd_556x45_Stanag",  8},
             {"HandGrenade_West", 1},
@@ -247,7 +247,7 @@ class M4SOC {
     };
 
     class HATAC : Rifleman {
-        weapons[] = {"ACE_SOC_M4A1_Aim", "ACE_Javelin_Direct"};
+        weapons[] = {"ACE_HK416_D10", "ACE_Javelin_Direct"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 8},
             {"HandGrenade_West", 1},
@@ -295,7 +295,7 @@ class M4SOC {
     class VD : Crew {
     };
 
-    class PC : Crew {
+    class P : Crew {
         items[] = {"ACRE_PRC343", "ACRE_PRC117F"};
     };
 

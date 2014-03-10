@@ -1,4 +1,4 @@
-class FactionMapping {
+class Hull_FactionMapping {
     factions[] = {
         {"BIS_BAF", "L85"},
         {"BIS_CZ", "AK74"},
@@ -13,7 +13,7 @@ class FactionMapping {
         {"CDF", "M16"},
         {"INS", "AK74"},
         {"GUE", "AK74"},
-        {"PMC_BAF", "M8"},
+        {"PMC_BAF", "XM8"},
         {"RU", "AK74M"},
         {"USMC", "M4SOC"},
     };

@@ -1,6 +1,6 @@
-class XM8 {
+class M4SOC {
     class Rifleman {
-        weapons[] = {"m8_carbine"};
+        weapons[] = {"ACE_SOC_M4A1_Aim"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 9},
             {"HandGrenade_West", 2},
@@ -19,7 +19,7 @@ class XM8 {
     };
 
     class Leader : Rifleman {
-        weapons[] = {"m8_carbineGL"};
+        weapons[] = {"ACE_SOC_M4A1_GL_AIMPOINT"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
             {"ACE_30Rnd_556x45_T_Stanag", 3},
@@ -110,7 +110,7 @@ class XM8 {
     };
 
     class RAT : Rifleman {
-        weapons[] = {"m8_carbine", "M136"};
+        weapons[] = {"ACE_SOC_M4A1_Aim", "M136"};
     };
 
     class MMGG : Rifleman {
@@ -139,7 +139,7 @@ class XM8 {
     };
 
     class HMGG : Rifleman {
-        weapons[] = {"m8_carbine", "ACE_M2HBProxy"};
+        weapons[] = {"ACE_SOC_M4A1_Aim", "ACE_M2HBProxy"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
             {"SmokeShell", 1}
@@ -150,7 +150,7 @@ class XM8 {
     };
 
     class HMGAG : Rifleman {
-        weapons[] = {"m8_carbine", "ACE_M3TripodProxy"};
+        weapons[] = {"ACE_SOC_M4A1_Aim", "ACE_M3TripodProxy"};
         magazines[] = {
             {"30Rnd_556x45_Stanag",  8},
             {"HandGrenade_West", 1},
@@ -178,7 +178,7 @@ class XM8 {
     };
 
     class MATG : Rifleman {
-        weapons[] = {"m8_carbine", "SMAW"};
+        weapons[] = {"ACE_SOC_M4A1_Aim", "SMAW"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
             {"SMAW_HEAA", 2},
@@ -220,7 +220,7 @@ class XM8 {
     };
 
     class HATG : Rifleman {
-        weapons[] = {"m8_carbine", "ACE_Javelin_Direct"};
+        weapons[] = {"ACE_SOC_M4A1_Aim", "ACE_Javelin_Direct"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
             {"SMAW_HEAA", 2},
@@ -232,7 +232,7 @@ class XM8 {
     };
 
     class HATAG : Rifleman {
-        weapons[] = {"m8_carbine", "ACE_Javelin_Direct"};
+        weapons[] = {"ACE_SOC_M4A1_Aim", "ACE_Javelin_Direct"};
         magazines[] = {
             {"30Rnd_556x45_Stanag",  8},
             {"HandGrenade_West", 1},
@@ -247,7 +247,7 @@ class XM8 {
     };
 
     class HATAC : Rifleman {
-        weapons[] = {"m8_carbine", "ACE_Javelin_Direct"};
+        weapons[] = {"ACE_SOC_M4A1_Aim", "ACE_Javelin_Direct"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 8},
             {"HandGrenade_West", 1},
@@ -295,7 +295,7 @@ class XM8 {
     class VD : Crew {
     };
 
-    class PC : Crew {
+    class P : Crew {
         items[] = {"ACRE_PRC343", "ACRE_PRC117F"};
     };
 
