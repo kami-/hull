@@ -18,7 +18,7 @@ hull_gear_fnc_assignInit = {
     removeAllWeapons _unit;
     removeBackpack _unit;
     _unit setVariable ["ace_sys_wounds_no_medical_gear", true, false];
-    _unit addWeapon "ACE_Earplugs";
+    TRY_ADD_WEAPON(_unit,"ACE_Earplugs");
 };
 
 hull_gear_fnc_getTemplate = {
@@ -37,7 +37,7 @@ hull_gear_fnc_getTemplateByFaction = {
     FUN_ARGS_1(_faction);
 
     private ["_factions", "_template"];
-    _factions = getArray (missionConfigFile >> "FactionMapping" >> "factions");
+    _factions = getArray (missionConfigFile >> "Hull_FactionMapping" >> "factions");
     {
         if (toLower (_x select 0) == toLower _faction) exitWith {
             _template = _x select 1;
@@ -113,7 +113,7 @@ hull_gear_fnc_assignNonRadioItems = {
 
     {
         if (!([_x] call acre_api_fnc_isRadio)) then {
-            _unit addWeapon _x;
+            TRY_ADD_WEAPON(_unit,_x);
         };
     } foreach _items;
 };
@@ -158,7 +158,8 @@ hull_gear_fnc_getRadios = {
 hull_gear_fnc_assignIFAK = {
     FUN_ARGS_2(_unit,_ifak);
 
-    [_unit, _ifak select 0, _ifak select 1, _ifak select 2] call ACE_fnc_PackIFAK;
+    [_unit, _ifak select 0, _ifak select 1, _ifak select 2, true] call ACE_fnc_PackIFAK;
+    _unit setVariable ["ACE_IFAK_Contents", _unit getVariable ["ACE_IFAK_Contents", [0,0,0]], true]; // 2Spooky4me hack to fix locality issue
 };
 
 hull_gear_fnc_validateTemplate = {
@@ -168,21 +169,21 @@ hull_gear_fnc_validateTemplate = {
     _error = false;
     _factionTemplate = [faction _unit] call hull_gear_fnc_getTemplateByFaction;
     if (!isNil {_manualTemplate} && {!isClass (missionConfigFile >> _manualTemplate)}) then {
-        diag_log format ["[GEAR - WARN]: No gear template found with name '%1', using '%2' faction default '%3' instead!", _manualTemplate, faction _unit, _factionTemplate];
+        diag_log LOG_MSG_3("WARN", "Gear - No gear template found with name '%1', using '%2' faction default '%3' instead!", _manualTemplate, faction _unit, _factionTemplate);
     };
 
     if (isNil {_factionTemplate}) then {
-        diag_log format ["[GEAR - WARN]: No gear template found for faction '%1'!", faction _unit];
+        diag_log LOG_MSG_1("WARN", "Gear - No gear template found for faction '%1'!", faction _unit);
         _error = true;
     };
 
     _template = [faction _unit, _manualTemplate] call hull_gear_fnc_getTemplate;
     if (!_error && {!isClass (missionConfigFile >> _template >> _class)}) then {
-        diag_log format ["[GEAR - WARN]: Class '%1' not found in gear template '%2', on unit '%3'! Using defalut 'Rifleman' instead.", _class, _template, _unit];
+        diag_log LOG_MSG_3("WARN", "Gear - Class '%1' not found in gear template '%2', on unit '%3'! Using defalut 'Rifleman' instead.", _class, _template, _unit);
         _class = "Rifleman";
     };
     if (!_error && {!isClass (missionConfigFile >> _template >> _class)}) then {
-        diag_log format ["[GEAR - ERROR]: Default class '%1' not found in gear template '%2'!", _class, _template];
+        diag_log LOG_MSG_2("ERROR", "Gear - Default class '%1' not found in gear template '%2'!", _class, _template);
         _error = true;
     };
 
@@ -201,7 +202,7 @@ hull_gear_fnc_validateTemplate = {
         private "_field";
         _field = _x select 0;
         if (!_error && {!call (_x select 1)}) then {
-            diag_log format ["[GEAR - ERROR]: Field '%1' not found in template '%2' and in class '%3'!", _field, _template, _class];
+            diag_log LOG_MSG_3("ERROR", "Gear - Field '%1' not found in template '%2' and in class '%3'!", _field, _template, _class);
             _error = true;
         };
     } foreach _fields;
