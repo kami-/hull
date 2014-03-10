@@ -1,0 +1,2 @@
+[true] call acre_api_fnc_setSpectator;
+_this call ace_fnc_startSpectator;
