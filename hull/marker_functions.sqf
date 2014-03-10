@@ -43,7 +43,7 @@ hull_marker_fnc_addMarker = {
             (group _unit) setVariable ["hull_marker_group", _markerName, false];
             PUSH(hull_marker_groups,group _unit);
         };
-        if (toLower _gearClass == "m") exitWith {
+        if (toLower _gearClass == "medic") exitWith {
             _markerName = format ["hull_marker_medic_%1_%2", _markerText, _unit];
             [_markerName, getPosATL _unit, "ICON", "b_med", _markerColor, _markerText, HULL_MARKER_MEDIC_SIZE] call hull_marker_fnc_createMarker;
             _unit setVariable ["hull_marker_medic", _markerName, false];
