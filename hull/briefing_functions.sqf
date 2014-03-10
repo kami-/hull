@@ -22,10 +22,10 @@ hull_briefing_fnc_addOrbat = {
 hull_briefing_fnc_addSideNotes = {
     private "_briefingFile";
     call {
-        if (side player == WEST) exitWith {_briefingFile = "briefing\blufor.sqf"};
-        if (side player == EAST) exitWith {_briefingFile = "briefing\opfor.sqf"};
-        if (side player == RESISTANCE) exitWith {_briefingFile = "briefing\indfor.sqf"};
-        if (side player == CIVILIAN) exitWith {_briefingFile = "briefing\civilian.sqf"};
+        if (side player == WEST) exitWith {_briefingFile = "hull\briefing\blufor.sqf"};
+        if (side player == EAST) exitWith {_briefingFile = "hull\briefing\opfor.sqf"};
+        if (side player == RESISTANCE) exitWith {_briefingFile = "hull\briefing\indfor.sqf"};
+        if (side player == CIVILIAN) exitWith {_briefingFile = "hull\briefing\civilian.sqf"};
     };
     [] call compile preprocessFile _briefingFile;
 };
