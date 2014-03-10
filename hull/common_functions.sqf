@@ -1,27 +1,37 @@
 #include "hull_macros.h"
 
-hull_common_fnc_unitInit = {
-    FUN_ARGS_3(_unit,_gearConfig,_markerConfig);
+hull_common_fnc_logOnServer = {
+    FUN_ARGS_1(_message);
 
-    if (local _unit) then {
-        [_unit, _gearConfig select 0, _gearConfig select 1] call hull_gear_fnc_assign;
+    if (isDedicated) then {
+        [0, {diag_log _this}, _message] call CBA_globalExecute;
     };
-    if (!isNil {_markerConfig} && {!isDedicated}) then {
-        [_unit, _markerConfig select 0, _markerConfig select 1] call hull_marker_fnc_initMarker;
-    };
-};
-
-hull_common_waitForPlayer = {
-    waitUntil {
-        !isNull player;
+    if (isServer) then {
+        diag_log _message;
     };
 };
 
-hull_common_playerInit = {
-    [] call hull_common_waitForPlayer;
-
-    [] spawn hull_acre_fnc_setPlayerFrequencies;
-    [] call hull_marker_fnc_addMarkers;
-    [] spawn hull_marker_fnc_updateAllMarkers;
-    [] call hull_briefing_fnc_addNotes;
+hull_common_fnc_missionSettings = {
+    // Enable ACE terrain grid change
+    //ace_settings_enable_tg_change = true;
+    // Enable ACE view distance change
+    ace_settings_enable_vd_change = true;
+    // Disable dynamic shouting and speaking for AI
+    ace_sys_aitalk_talkforplayer = false;
+    // Disables weapon removal for pilots
+    ace_sys_eject_fnc_weaponCheckEnabled = {false};
+    // Disables rotor damage
+    ace_sys_rotoreffects_fnc_rocko_manshred = {};
+    // Disables ACE group markers
+    ACE_sys_tracking_MarkersEnabled = false;
+    // Disables ACE group markers
+    ACE_sys_tracking_markers_enabled_override = true;
+    // Removes default ACE medical gear given at start of mission
+    player setVariable ["ace_sys_wounds_no_medical_gear", true];
+    // Disables AI talking
+    player setVariable ["BIS_noCoreConversations", true];
+    // Disables game saving
+    enableSaving [false, false];
+    // Sets view distance limit
+    missionNamespace setVariable ["ace_viewdistance_limit", 8000];
 };
