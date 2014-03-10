@@ -1,1 +1,0 @@
-[] call compile preprocessFileLineNumbers "hull\hull_init.sqf";
