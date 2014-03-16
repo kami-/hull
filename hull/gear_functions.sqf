@@ -98,6 +98,7 @@ hull_gear_fnc_assignRuckWeapons = {
     {
         [_unit, _x select 0, _x select 1] call ACE_fnc_PackWeapon;
     } foreach _ruckWeapons;
+    _unit setVariable ["ACE_RuckWepContents", _unit getVariable ["ACE_RuckWepContents", []], true];
 };
 
 hull_gear_fnc_assignRuckMagazines = {
@@ -106,6 +107,7 @@ hull_gear_fnc_assignRuckMagazines = {
     {
         [_unit, _x select 0, _x select 1] call ACE_fnc_PackMagazine;
     } foreach _ruckMagazines;
+    _unit setVariable ["ACE_RuckMagContents", _unit getVariable ["ACE_RuckMagContents", []], true];
 };
 
 hull_gear_fnc_assignNonRadioItems = {
@@ -159,7 +161,7 @@ hull_gear_fnc_assignIFAK = {
     FUN_ARGS_2(_unit,_ifak);
 
     [_unit, _ifak select 0, _ifak select 1, _ifak select 2, true] call ACE_fnc_PackIFAK;
-    _unit setVariable ["ACE_IFAK_Contents", _unit getVariable ["ACE_IFAK_Contents", [0,0,0]], true]; // 2Spooky4me hack to fix locality issue
+    _unit setVariable ["ACE_IFAK_Contents", _unit getVariable ["ACE_IFAK_Contents", [0,0,0]], true];
 };
 
 hull_gear_fnc_validateTemplate = {
