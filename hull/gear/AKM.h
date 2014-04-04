@@ -25,7 +25,7 @@ class AKM {
             {"ACE_30Rnd_762x39_T_AK47", 3},
             {"HandGrenade_East", 1},
             {"SmokeShell", 2},
-            {"1Rnd_HE_GP25", 2},
+            {"1Rnd_HE_GP25", 4},
             {"1Rnd_SMOKE_GP25", 2},
             {"1Rnd_SmokeRed_GP25", 1},
             {"1Rnd_SmokeGreen_GP25", 1}
@@ -47,7 +47,7 @@ class AKM {
     };
 
     class Crew : Rifleman {
-        weapons[] = {"ACE_AKMS_U"};
+        weapons[] = {"AKS_74_U"};
         magazines[] = {
             {"30Rnd_762x39_AK47", 6},
             {"SmokeShell", 1},
@@ -79,9 +79,9 @@ class AKM {
             {"ACE_30Rnd_762x39_T_AK47", 2},
             {"SmokeShell", 2},
             {"SmokeShellGreen", 2},
-            {"ACE_Morphine", 20},
-            {"ACE_LargeBandage", 20},
-            {"ACE_Epinephrine", 20},
+            {"ACE_Morphine", 15},
+            {"ACE_LargeBandage", 15},
+            {"ACE_Epinephrine", 10},
             {"ACE_Medkit", 8}
         };
         items[] = {"ACRE_PRC343", "ACRE_PRC148"};
@@ -93,16 +93,21 @@ class AKM {
     class AR : Rifleman {
         weapons[] = {"ACE_RPK"};
         magazines[] = {
-            {"ACE_75Rnd_762x39_B_AK47", 3},
-            {"ACE_40Rnd_762x39_T_AK47", 3},
+            {"ACE_75Rnd_762x39_B_AK47", 4},
+            {"ACE_40Rnd_762x39_T_AK47", 2},
             {"HandGrenade_East", 1},
             {"SmokeShell", 1}
+        };
+        ruckMagazines[] = {
+            {"HandGrenade_East", 2},
+            {"SmokeShell", 2}
         };
     };
 
     class AAR : Rifleman {
         ruckMagazines[] = {
-            {"ACE_40Rnd_762x39_T_AK47", 4},
+            {"ACE_40Rnd_762x39_T_AK47", 2},
+            {"ACE_75Rnd_762x39_B_AK47", 4},
             {"HandGrenade_East", 1},
             {"SmokeShell", 1}
         };
@@ -110,7 +115,7 @@ class AKM {
 
     class RAT : Rifleman {
         weapons[] = {"ACE_AKMS", "ACE_RPG7V_PGO7"};
-		 ruckMagazines[] = {
+         ruckMagazines[] = {
             {"PG7V", 2},
         };
     };
@@ -158,6 +163,7 @@ class AKM {
             {"HandGrenade_East", 1},
             {"SmokeShell", 1}
         };
+        ruck = "ACE_BackPack_ACR";
         ruckMagazines[] = {
             {"30Rnd_762x39_AK47", 2},
             {"ACE_30Rnd_762x39_T_AK47", 2},
@@ -172,6 +178,7 @@ class AKM {
             {"HandGrenade_East", 1},
             {"SmokeShell", 1}
         };
+        ruck = "ACE_BackPack_ACR";
         ruckMagazines[] = {
             {"30Rnd_762x39_AK47", 2},
             {"ACE_30Rnd_762x39_T_AK47", 2},
@@ -198,6 +205,7 @@ class AKM {
             {"HandGrenade_East", 1},
             {"SmokeShell", 1}
         };
+        ruck = "ACE_Backpack_RPG";
         ruckMagazines[] = {
             {"30Rnd_762x39_AK47", 2},
             {"ACE_30Rnd_762x39_T_AK47", 2},
@@ -213,6 +221,7 @@ class AKM {
             {"HandGrenade_East", 1},
             {"SmokeShell", 1}
         };
+        ruck = "ACE_Backpack_RPG";
         ruckMagazines[] = {
             {"30Rnd_762x39_AK47", 2},
             {"ACE_30Rnd_762x39_T_AK47", 2},
@@ -299,5 +308,33 @@ class AKM {
     };
 
     class PCM : Crew {
+    };
+    class ENG : Rifleman {
+        weapons[] = {"AKS_74_U"};
+        magazines[] = {
+            {"30Rnd_545x39_AK", 6},
+            {"SmokeShell", 1},
+            {"SmokeShellGreen", 1}
+        };
+        ruck = "ACE_BackPack_ACR";
+        ruckMagazines[] = {
+            {"pipebomb", 2},
+            {"mine", 3}
+        };
+        items[] = {"ACRE_PRC343","ACRE_PRC148"};
+    };
+    class ENGA : Rifleman {
+        weapons[] = {"AKS_74_U"};
+        magazines[] = {
+            {"30Rnd_545x39_AK", 6},
+            {"SmokeShell", 1},
+            {"SmokeShellGreen", 1}
+        };
+        ruck = "ACE_BackPack_ACR";
+        ruckMagazines[] = {
+            {"pipebomb", 2},
+            {"mine", 3}
+        };
+        items[] = {"ACRE_PRC343"};
     };
 };

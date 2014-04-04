@@ -25,7 +25,7 @@ class L85 {
             {"ACE_30Rnd_556x45_T_Stanag", 3},
             {"HandGrenade_West", 1},
             {"SmokeShell", 2},
-            {"1Rnd_HE_M203", 2},
+            {"1Rnd_HE_M203", 4},
             {"1Rnd_Smoke_M203", 2},
             {"1Rnd_SmokeRed_M203", 1},
             {"1Rnd_SmokeGreen_M203", 1}
@@ -79,9 +79,9 @@ class L85 {
             {"ACE_30Rnd_556x45_T_Stanag", 2},
             {"SmokeShell", 2},
             {"SmokeShellGreen", 2},
-            {"ACE_Morphine", 20},
-            {"ACE_LargeBandage", 20},
-            {"ACE_Epinephrine", 20},
+            {"ACE_Morphine", 15},
+            {"ACE_LargeBandage", 15},
+            {"ACE_Epinephrine", 10},
             {"ACE_Medkit", 8}
         };
         items[] = {"ACRE_PRC343", "ACRE_PRC148"};
@@ -97,6 +97,10 @@ class L85 {
             {"ACE_100Rnd_556x45_T_M249", 3},
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
+        };
+        ruckMagazines[] = {
+            {"HandGrenade_West", 2},
+            {"SmokeShell", 2}
         };
     };
 
@@ -156,10 +160,11 @@ class L85 {
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
         };
+        ruck = "ACE_VTAC_RUSH72_OD";
         ruckMagazines[] = {
             {"30Rnd_556x45_Stanag", 2},
             {"ACE_30Rnd_556x45_T_Stanag", 2},
-            {"ACE_M2_CSWDM", 1}
+            {"ACE_M2_CSWDM", 2}
         };
         items[] = {"ACRE_PRC343", "Binocular_Vector"};
     };
@@ -170,6 +175,7 @@ class L85 {
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
         };
+        ruck = "ACE_VTAC_RUSH72_OD";
         ruckMagazines[] = {
             {"30Rnd_556x45_Stanag", 2},
             {"ACE_30Rnd_556x45_T_Stanag", 2},
@@ -182,8 +188,7 @@ class L85 {
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
             {"MAAWS_HEAT", 2},
-            {"SmokeShell", 1},
-            {"ACE_SMAW_Spotting", 3}
+            {"SmokeShell", 1}
         };
         ruckMagazines[] = {
         };
@@ -200,7 +205,7 @@ class L85 {
         ruckMagazines[] = {
             {"30Rnd_556x45_Stanag", 2},
             {"ACE_30Rnd_556x45_T_Stanag", 2},
-            {"MAAWS_HE", 1},
+            {"ACE_MAAWS_HE", 1},
             {"MAAWS_HEAT", 2}
         };
         items[] = {"ACRE_PRC343", "Binocular_Vector"};
@@ -210,7 +215,7 @@ class L85 {
         magazines[] = {
             {"30Rnd_556x45_Stanag", 8},
             {"MAAWS_HEAT", 1},
-            {"MAAWS_HE", 1},
+            {"ACE_MAAWS_HE", 1},
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
         };
@@ -225,7 +230,6 @@ class L85 {
         weapons[] = {"BAF_L85A2_RIS_Holo", "ACE_Javelin_Direct"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
-            {"MAAWS_HEAT", 2},
             {"SmokeShell", 1}
         };
         ruckMagazines[] = {
@@ -302,5 +306,33 @@ class L85 {
     };
 
     class PCM : Crew {
+    };
+    class ENG : Rifleman {
+        weapons[] = {"ACE_MP5A5"};
+        magazines[] = {
+            {"30Rnd_9x19_MP5", 6},
+            {"SmokeShell", 1},
+            {"SmokeShellGreen", 1}
+        };
+        ruck = "ACE_VTAC_RUSH72_OD";
+        ruckMagazines[] = {
+            {"pipebomb", 2},
+            {"mine", 3}
+        };
+        items[] = {"ACRE_PRC343","ACRE_PRC148"};
+    };
+    class ENGA : Rifleman {
+        weapons[] = {"ACE_MP5A5"};
+        magazines[] = {
+            {"30Rnd_9x19_MP5", 6},
+            {"SmokeShell", 1},
+            {"SmokeShellGreen", 1}
+        };
+        ruck = "ACE_VTAC_RUSH72_OD";
+        ruckMagazines[] = {
+            {"pipebomb", 2},
+            {"mine", 3}
+        };
+        items[] = {"ACRE_PRC343"};
     };
 };

@@ -25,7 +25,7 @@ class HK416 {
             {"ACE_30Rnd_556x45_T_Stanag", 3},
             {"HandGrenade_West", 1},
             {"SmokeShell", 2},
-            {"1Rnd_HE_M203", 2},
+            {"1Rnd_HE_M203", 4},
             {"1Rnd_Smoke_M203", 2},
             {"1Rnd_SmokeRed_M203", 1},
             {"1Rnd_SmokeGreen_M203", 1}
@@ -79,9 +79,9 @@ class HK416 {
             {"ACE_30Rnd_556x45_T_Stanag", 2},
             {"SmokeShell", 2},
             {"SmokeShellGreen", 2},
-            {"ACE_Morphine", 20},
-            {"ACE_LargeBandage", 20},
-            {"ACE_Epinephrine", 20},
+            {"ACE_Morphine", 15},
+            {"ACE_LargeBandage", 15},
+            {"ACE_Epinephrine", 10},
             {"ACE_Medkit", 8}
         };
         items[] = {"ACRE_PRC343", "ACRE_PRC148"};
@@ -97,6 +97,10 @@ class HK416 {
             {"100Rnd_556x45_BetaCMag", 3},
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
+        };
+        ruckMagazines[] = {
+            {"HandGrenade_West", 2},
+            {"SmokeShell", 2}
         };
     };
 
@@ -156,10 +160,11 @@ class HK416 {
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
         };
+        ruck = "ACE_VTAC_RUSH72_OD";
         ruckMagazines[] = {
             {"30Rnd_556x45_Stanag", 2},
             {"ACE_30Rnd_556x45_T_Stanag", 2},
-            {"ACE_M2_CSWDM", 1}
+            {"ACE_M2_CSWDM", 2}
         };
         items[] = {"ACRE_PRC343", "Binocular_Vector"};
     };
@@ -170,6 +175,7 @@ class HK416 {
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
         };
+        ruck = "ACE_VTAC_RUSH72_OD";
         ruckMagazines[] = {
             {"30Rnd_556x45_Stanag", 2},
             {"ACE_30Rnd_556x45_T_Stanag", 2},
@@ -223,7 +229,6 @@ class HK416 {
         weapons[] = {"ACE_HK416_D10", "ACE_Javelin_Direct"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
-            {"SMAW_HEAA", 2},
             {"SmokeShell", 1}
         };
         ruckMagazines[] = {
@@ -300,5 +305,33 @@ class HK416 {
     };
 
     class PCM : Crew {
+    };
+    class ENG : Rifleman {
+        weapons[] = {"ACE_MP5A5"};
+        magazines[] = {
+            {"30Rnd_9x19_MP5", 6},
+            {"SmokeShell", 1},
+            {"SmokeShellGreen", 1}
+        };
+        ruck = "ACE_VTAC_RUSH72_OD";
+        ruckMagazines[] = {
+            {"pipebomb", 2},
+            {"mine", 3}
+        };
+        items[] = {"ACRE_PRC343","ACRE_PRC148"};
+    };
+    class ENGA : Rifleman {
+        weapons[] = {"ACE_MP5A5"};
+        magazines[] = {
+            {"30Rnd_9x19_MP5", 6},
+            {"SmokeShell", 1},
+            {"SmokeShellGreen", 1}
+        };
+        ruck = "ACE_VTAC_RUSH72_OD";
+        ruckMagazines[] = {
+            {"pipebomb", 2},
+            {"mine", 3}
+        };
+        items[] = {"ACRE_PRC343"};
     };
 };
