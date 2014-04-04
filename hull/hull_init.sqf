@@ -8,8 +8,10 @@ if (!isDedicated) then {
     if (isServer) then {
         [] spawn hull_mission_fnc_broadcastWeather;
         [] spawn hull_mission_fnc_serverSafetyTimerLoop;
+        [hull_gear_fnc_tryAssignRadios] spawn hull_unit_fnc_foreachNonPlayerUnits;
     };
 } else {
     [] spawn hull_mission_fnc_broadcastWeather;
     [] spawn hull_mission_fnc_serverSafetyTimerLoop;
+    [hull_gear_fnc_tryAssignRadios] spawn hull_unit_fnc_foreachNonPlayerUnits;
 };

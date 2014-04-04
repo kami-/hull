@@ -27,12 +27,23 @@ hull_unit_fnc_playerInit = {
     [] call hull_common_fnc_waitForPlayer;
 
     [] spawn hull_acre_fnc_setPlayerFrequencies;
+    [player] spawn hull_gear_fnc_tryAssignRadios;
     [] call hull_marker_fnc_addMarkers;
     [] spawn hull_marker_fnc_updateAllMarkers;
     [] call hull_briefing_fnc_addNotes;
     [] call hull_mission_fnc_addPlayerEHs;
     [] spawn hull_mission_fnc_clientSafetyTimerLoop;
     [] call hull_unit_fnc_setFireTeamColors;
+};
+
+hull_unit_fnc_foreachNonPlayerUnits = {
+    FUN_ARGS_1(_func);
+
+    {
+        if (!isPlayer _x) then {
+            [_x] call _func;
+        };
+    } foreach allUnits;
 };
 
 hull_unit_fnc_addEHs = {
