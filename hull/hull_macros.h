@@ -1,3 +1,5 @@
+#define HULL_CONFIGFILE            missionConfigFile
+
 // WARNING
 // Macros are sensitive for "," (comma), "(", ")" (parenthese) and " " (space).
 // Provide only the asked numbers of arguments, without additional commas and without spaces beetween commas.
