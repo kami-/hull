@@ -24,7 +24,7 @@ hull_unit_fnc_waitForPlayer = {
 };
 
 hull_unit_fnc_playerInit = {
-    [] call hull_common_fnc_waitForPlayer;
+    [] call hull_unit_fnc_waitForPlayer;
 
     [] spawn hull_acre_fnc_setPlayerFrequencies;
     [player] spawn hull_gear_fnc_tryAssignRadios;
