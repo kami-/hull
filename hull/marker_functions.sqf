@@ -122,7 +122,7 @@ hull_marker_fnc_addFireTeamMarkers = {
 hull_marker_fnc_addFireTeamMarker = {
     FUN_ARGS_1(_unit);
 
-    _markerName = format ["hull_marker_fireTeam_%1_%2", _markerText, _unit];
+    _markerName = format ["hull_marker_fireTeam_%1", _unit];
     [_markerName, getPosATL _unit, "ICON", "mil_triangle", HULL_MARKER_FIRETEAM_COLOR, "", HULL_MARKER_FIRETEAM_SIZE] call hull_marker_fnc_createMarker;
     _unit setVariable ["hull_marker_fireTeam", _markerName];
     PUSH(hull_marker_fireTeam,_unit);
