@@ -1,4 +1,1 @@
-hull
-====
-
-Hull is a mission framework made for Arma 2.
+![Hull](http://i.imgur.com/kCyvIIe.jpg)
