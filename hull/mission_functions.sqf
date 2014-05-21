@@ -62,18 +62,19 @@ hull_mission_fnc_setEnviroment = {
     [10, [] call hull_mission_fnc_getWeather] call hull_mission_fnc_setWeather;
 };
 
-hull_mission_fnc_broadcastWeather = {
+hull_mission_fnc_broadcastEnviroment = {
     waitUntil {
-        hull_missios_syncWeather = [overcast, fog, rain];
-        publicVariable "hull_missios_syncWeather";
+        hull_mission_syncEnviroment = [date, [overcast, fog, rain]];
+        publicVariable "hull_mission_syncEnviroment";
         sleep 30;
         false;
     };
 };
 
 hull_mission_fnc_addPlayerEHs = {
-    "hull_missios_syncWeather" addPublicVariableEventHandler {
-        [10, _this select 1] call hull_mission_fnc_setWeather;
+    "hull_mission_syncEnviroment" addPublicVariableEventHandler {
+        setDate (_this select 1 select 0);
+        [10, _this select 1 select 1] call hull_mission_fnc_setWeather;
     };
 };
 
