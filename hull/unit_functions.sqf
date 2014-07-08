@@ -83,6 +83,11 @@ hull_unit_fnc_friendlyFireEH = {
 hull_unit_fnc_killedEH = {
     FUN_ARGS_2(_unit,_killer);
 
+    if (_unit != _killer && {side _unit == side _killer}) then {
+        DECLARE(_message) = LOGGING_FORMAT("hull.unit.friendlyFire","WARN",FMT_2("'%1' killed '%2'!",_killer,_unit));
+        [_message] call hull_common_fnc_logOnServer;
+    };
+
     _unit removeEventHandler ["HandleDamage", _unit getVariable "hull_eh_friendlyFire"];
     _unit removeEventHandler ["Killed", _unit getVariable "hull_eh_killed"];
     _unit setVariable ["hull_eh_friendlyFire", nil];
