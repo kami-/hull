@@ -26,13 +26,13 @@ hull_unit_fnc_waitForPlayer = {
     waitUntil {
         !isNull player;
     };
+    ["player.initialized", [player]] call hull_event_fnc_emitEvent;
 };
 
 hull_unit_fnc_playerInit = {
     [] call hull_unit_fnc_waitForPlayer;
 
     [] spawn hull_acre_fnc_setPlayerFrequencies;
-    [player] spawn hull_gear_fnc_tryAssignRadios;
     [] call hull_marker_fnc_addMarkers;
     [] spawn hull_marker_fnc_updateAllMarkers;
     [] call hull_briefing_fnc_addNotes;

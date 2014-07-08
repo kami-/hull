@@ -20,6 +20,7 @@ hull_gear_fnc_assign = {
         [_unit, _class, _template] call hull_gear_fnc_assignInit;
         [_unit, _class, _template] call hull_gear_fnc_assignTemplate;
     };
+    ["gear.assigned", [_unit]] call hull_event_fnc_emitEvent;
 };
 
 hull_gear_fnc_assignInit = {
@@ -145,18 +146,16 @@ hull_gear_fnc_tryAssignRadios = {
     _gearClass = _unit getVariable "hull_gear_class";
     _gearTemplate = _unit getVariable "hull_gear_template";
     if (!isNil {_gearClass} && {!isNil {_gearTemplate}}) then {
-        [_unit, getArray (GEAR_CONFIG >> _gearTemplate >> _gearClass >> "items")] spawn hull_gear_fnc_assignRadios;
+        [_unit, getArray (GEAR_CONFIG >> _gearTemplate >> _gearClass >> "items")] call hull_gear_fnc_assignRadios;
     } else {
         ERROR("hull.gear.validate",FMT_3("No gear template '%1' or class '%2' was found for unit '%3'!",_gearTemplate,_gearClass,_unit));
     };
+    ["gear.radio.assigned", [_unit]] call hull_event_fnc_emitEvent;
 };
 
 hull_gear_fnc_assignRadios = {
     FUN_ARGS_2(_unit,_items);
 
-    waitUntil {
-        hull_acre_isInitialized;
-    };
     [_unit] call hull_gear_fnc_removeRadios;
     {
         _unit addWeapon _x;
@@ -240,4 +239,12 @@ hull_gear_fnc_validateTemplate = {
     } foreach _fields;
 
     _error;
+};
+
+hull_gear_fnc_addEventHandlers = {
+    ["acre.initialized", hull_gear_fnc_tryAssignRadios] call hull_event_fnc_addEventHandler;
+};
+
+hull_gear_fnc_preInit = {
+    [] call hull_gear_fnc_addEventHandlers;
 };
