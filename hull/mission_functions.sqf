@@ -11,8 +11,8 @@ hull_mission_fnc_evaluateParams = {
     if (!isNil {paramsArray}) then {
         {
             private ["_name", "_code"];
-            _name = configName ((HULL_CONFIGFILE >> "Params") select _forEachIndex);
-            _code = getText (HULL_CONFIGFILE >> "Params" >> _name >> "code");
+            _name = configName ((missionConfigFile >> "Params") select _forEachIndex);
+            _code = getText (missionConfigFile >> "Params" >> _name >> "code");
             call compile format [_code, _x];
         } foreach paramsArray;
     };
@@ -20,13 +20,13 @@ hull_mission_fnc_evaluateParams = {
 
 hull_mission_fnc_readMissionParamValues = {
     if (!isNil {hull_mission_date}) then {
-        hull_mission_date = (getArray (HULL_CONFIGFILE >> "Hull_MissionParams" >> "date")) select hull_mission_date;
+        hull_mission_date = (getArray (HULL_CONFIGFILE >> "MissionParams" >> "date")) select hull_mission_date;
     };
     if (!isNil {hull_mission_timeOfDay}) then {
-        hull_mission_timeOfDay = (getArray (HULL_CONFIGFILE >> "Hull_MissionParams" >> "time")) select hull_mission_timeOfDay;
+        hull_mission_timeOfDay = (getArray (HULL_CONFIGFILE >> "MissionParams" >> "time")) select hull_mission_timeOfDay;
     };
     if (!isNil {hull_mission_weather}) then {
-        hull_mission_weather = (getArray (HULL_CONFIGFILE >> "Hull_MissionParams" >> "weather")) select hull_mission_weather;
+        hull_mission_weather = (getArray (HULL_CONFIGFILE >> "MissionParams" >> "weather")) select hull_mission_weather;
     };
 };
 

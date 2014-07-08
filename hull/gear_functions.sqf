@@ -1,6 +1,6 @@
 #include "hull_macros.h"
 
-#define GEAR_TEMPLATE_CONTAINER_CLASS       "HullGearTemplates"
+#define GEAR_CONFIG                         HULL_CONFIGFILE >> "Gear"
 #define GEAR_TEMPLATE_BASE_CLASS            "Rifleman"
 
 
@@ -33,7 +33,7 @@ hull_gear_fnc_getTemplate = {
 
     private "_template";
     _template = _manualTemplate;
-    if (isNil {_template} || {!isClass (HULL_CONFIGFILE >> _manualTemplate)}) then {
+    if (isNil {_template} || {!isClass (GEAR_CONFIG >> _manualTemplate)}) then {
         _template = [_faction] call hull_gear_fnc_getTemplateByFaction;
     };
 
@@ -43,7 +43,7 @@ hull_gear_fnc_getTemplate = {
 hull_gear_fnc_getClass = {
     FUN_ARGS_2(_template,_manualClass);
 
-    if (!isClass (HULL_CONFIGFILE >> _template >> _manualClass)) then {
+    if (!isClass (GEAR_CONFIG >> _template >> _manualClass)) then {
         GEAR_TEMPLATE_BASE_CLASS;
     } else {
         _manualClass;
@@ -54,7 +54,7 @@ hull_gear_fnc_getTemplateByFaction = {
     FUN_ARGS_1(_faction);
 
     private ["_factions", "_template"];
-    _factions = getArray (HULL_CONFIGFILE >> "Hull_FactionMapping" >> "factions");
+    _factions = getArray (GEAR_CONFIG >> "factions");
     {
         if (toLower (_x select 0) == toLower _faction) exitWith {
             _template = _x select 1;
@@ -68,7 +68,7 @@ hull_gear_fnc_assignTemplate = {
     FUN_ARGS_3(_unit,_class,_template);
 
     private "_config";
-    _config = HULL_CONFIGFILE >> _template >> _class;
+    _config = GEAR_CONFIG >> _template >> _class;
     [_unit, getText (_config >> "ruck")] call hull_gear_fnc_assignRuck;
     [_unit, getArray (_config >> "magazines")] call hull_gear_fnc_assignMagazines;
     [_unit, getArray (_config >> "weapons")] call hull_gear_fnc_assignWeapons;
@@ -140,7 +140,7 @@ hull_gear_fnc_tryAssignRadios = {
     _gearClass = _unit getVariable "hull_gear_class";
     _gearTemplate = _unit getVariable "hull_gear_template";
     if (!isNil {_gearClass} && {!isNil {_gearTemplate}}) then {
-        [_unit, getArray (HULL_CONFIGFILE >> _gearTemplate >> _gearClass >> "items")] spawn hull_gear_fnc_assignRadios;
+        [_unit, getArray (GEAR_CONFIG >> _gearTemplate >> _gearClass >> "items")] spawn hull_gear_fnc_assignRadios;
     } else {
         diag_log LOG_MSG_3("ERROR", "Gear - No gear template ('%1') or class ('%2') was found for unit '%3'!", _gearTemplate, _gearClass, _unit);
     };
@@ -195,7 +195,7 @@ hull_gear_fnc_validateTemplate = {
     private ["_error", "_factionTemplate", "_template", "_config", "_fields"];
     _error = false;
     _factionTemplate = [faction _unit] call hull_gear_fnc_getTemplateByFaction;
-    if (!isNil {_manualTemplate} && {!isClass (HULL_CONFIGFILE >> _manualTemplate)}) then {
+    if (!isNil {_manualTemplate} && {!isClass (GEAR_CONFIG >> _manualTemplate)}) then {
         diag_log LOG_MSG_3("WARN", "Gear - No gear template found with name '%1', using '%2' faction default '%3' instead!", _manualTemplate, faction _unit, _factionTemplate);
     };
 
@@ -205,16 +205,16 @@ hull_gear_fnc_validateTemplate = {
     };
 
     _template = [faction _unit, _manualTemplate] call hull_gear_fnc_getTemplate;
-    if (!_error && {!isClass (HULL_CONFIGFILE >> _template >> _manualClass)}) then {
+    if (!_error && {!isClass (GEAR_CONFIG >> _template >> _manualClass)}) then {
         diag_log LOG_MSG_3("WARN", "Gear - Class '%1' not found in gear template '%2', on unit '%3'! Using defalut 'Rifleman' instead.", _manualClass, _template, _unit);
         _manualClass = "Rifleman";
     };
-    if (!_error && {!isClass (HULL_CONFIGFILE >> _template >> _manualClass)}) then {
+    if (!_error && {!isClass (GEAR_CONFIG >> _template >> _manualClass)}) then {
         diag_log LOG_MSG_2("ERROR", "Gear - Default class '%1' not found in gear template '%2'!", _manualClass, _template);
         _error = true;
     };
 
-    _config = HULL_CONFIGFILE >> _template >> _manualClass;
+    _config = GEAR_CONFIG >> _template >> _manualClass;
     _fields = [
         ["ruck", {isText (_config >> _field)}],
         ["magazines", {isArray (_config >> _field)}],
