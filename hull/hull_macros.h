@@ -1,4 +1,7 @@
-#define HULL_CONFIGFILE            missionConfigFile
+#ifndef HULL_MACROS_H
+#define HULL_MACROS_H
+
+#define HULL_CONFIGFILE            missionConfigFile >> "Hull"
 
 // WARNING
 // Macros are sensitive for "," (comma), "(", ")" (parenthese) and " " (space).
@@ -198,3 +201,14 @@
 
 // Adds weapon to unit if it doesn't have one already.
 #define TRY_ADD_WEAPON(UNIT,WEAPON) if (!((UNIT) hasWeapon (WEAPON))) then {(UNIT) addWeapon (WEAPON);};
+
+// Creates a private declaration for a variable and enables instant assigment.
+// Example:
+//      GIVEN:
+//      WHEN:
+//          DECLARE(_group) = _x;
+//      THEN:
+//          private "_group"; _group = _x;
+#define DECLARE(VAR) private #VAR; VAR
+
+#endif //HULL_MACROS_H
