@@ -1,5 +1,10 @@
 #include "hull_macros.h"
 
+#define LOGGING_LEVEL_WARN
+#define LOGGING_TO_RPT
+#include "logbook.h"
+
+
 #define GEAR_CONFIG                         HULL_CONFIGFILE >> "Gear"
 #define GEAR_TEMPLATE_BASE_CLASS            "Rifleman"
 
@@ -142,7 +147,7 @@ hull_gear_fnc_tryAssignRadios = {
     if (!isNil {_gearClass} && {!isNil {_gearTemplate}}) then {
         [_unit, getArray (GEAR_CONFIG >> _gearTemplate >> _gearClass >> "items")] spawn hull_gear_fnc_assignRadios;
     } else {
-        diag_log LOG_MSG_3("ERROR", "Gear - No gear template ('%1') or class ('%2') was found for unit '%3'!", _gearTemplate, _gearClass, _unit);
+        ERROR("hull.gear.validate",FMT_3("No gear template '%1' or class '%2' was found for unit '%3'!",_gearTemplate,_gearClass,_unit);
     };
 };
 
@@ -196,21 +201,21 @@ hull_gear_fnc_validateTemplate = {
     _error = false;
     _factionTemplate = [faction _unit] call hull_gear_fnc_getTemplateByFaction;
     if (!isNil {_manualTemplate} && {!isClass (GEAR_CONFIG >> _manualTemplate)}) then {
-        diag_log LOG_MSG_3("WARN", "Gear - No gear template found with name '%1', using '%2' faction default '%3' instead!", _manualTemplate, faction _unit, _factionTemplate);
+        WARN("hull.gear.validate",FMT_3("No gear template found with name '%1', using '%2' faction default '%3' instead!",_manualTemplate,faction _unit,_factionTemplate);
     };
 
     if (isNil {_factionTemplate}) then {
-        diag_log LOG_MSG_1("WARN", "Gear - No gear template found for faction '%1'!", faction _unit);
+        WARN("hull.gear.validate",FMT_1("No gear template found for faction '%1'!",faction _unit);
         _error = true;
     };
 
     _template = [faction _unit, _manualTemplate] call hull_gear_fnc_getTemplate;
     if (!_error && {!isClass (GEAR_CONFIG >> _template >> _manualClass)}) then {
-        diag_log LOG_MSG_3("WARN", "Gear - Class '%1' not found in gear template '%2', on unit '%3'! Using defalut 'Rifleman' instead.", _manualClass, _template, _unit);
-        _manualClass = "Rifleman";
+        WARN("hull.gear.validate",FMT_4("Class '%1' not found in gear template '%2', on unit '%3'! Using defalut '%4' instead.",_manualClass,_template,_unit,GEAR_TEMPLATE_BASE_CLASS);
+        _manualClass = GEAR_TEMPLATE_BASE_CLASS;
     };
     if (!_error && {!isClass (GEAR_CONFIG >> _template >> _manualClass)}) then {
-        diag_log LOG_MSG_2("ERROR", "Gear - Default class '%1' not found in gear template '%2'!", _manualClass, _template);
+        ERROR("hull.gear.validate",FMT_2("Default class '%1' not found in gear template '%2'!",_manualClass,_template);
         _error = true;
     };
 
@@ -229,25 +234,10 @@ hull_gear_fnc_validateTemplate = {
         private "_field";
         _field = _x select 0;
         if (!_error && {!call (_x select 1)}) then {
-            diag_log LOG_MSG_3("ERROR", "Gear - Field '%1' not found in template '%2' and in class '%3'!", _field, _template, _manualClass);
+            ERROR("hull.gear.validate",FMT_3("Field '%1' not found in template '%2' and in class '%3'!",_field,_template,_manualClass);
             _error = true;
         };
     } foreach _fields;
 
     _error;
 };
-
-/*
-hull_gear_fnc_cleanUp = {
-    _globalVars = [
-        hull_gear_fnc_assign, hull_gear_fnc_assignInit, hull_gear_fnc_getTemplate,
-        hull_gear_fnc_getTemplateByFaction, hull_gear_fnc_assignTemplate, hull_gear_fnc_assignRuck,
-        hull_gear_fnc_assignMagazines, hull_gear_fnc_assignWeapons, hull_gear_fnc_assignRuckWeapons,
-        hull_gear_fnc_assignRuckMagazines, hull_gear_fnc_assignItems, hull_gear_fnc_assignIFAK,
-        hull_gear_fnc_validateTemplate
-    ];
-    {
-        _x = nil;
-    } foreach _globalVars;
-};
-/*

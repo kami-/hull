@@ -1,5 +1,10 @@
 #include "hull_macros.h"
 
+#define LOGGING_LEVEL_WARN
+#define LOGGING_TO_RPT
+#include "logbook.h"
+
+
 #define HULL_TEAMCOLOR_RED ["FTL", "RAT"]
 #define HULL_TEAMCOLOR_BLUE ["AR", "AAR"]
 
@@ -68,7 +73,7 @@ hull_unit_fnc_friendlyFireEH = {
     FUN_ARGS_5(_unit,_selectionName,_damage,_source,_projectile);
 
     if (_selectionName == "" && {_unit != _source} && {side _unit == side _source}) then {
-        _message = LOG_MSG_4("WARN", "Friendly Fire - '%1' dealt '%2' damage with '%3' to '%4'!", _source, _damage, _projectile, _unit);
+        WARN("hull.unit.friendlyFire",FMT_4("'%1' dealt '%2' damage with '%3' to '%4'!",_source,_damage,_projectile,_unit);
         [_message] call hull_common_fnc_logOnServer;
     };
 
