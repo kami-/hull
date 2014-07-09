@@ -35,6 +35,7 @@ hull_marker_fnc_addMarkers = {
     } foreach hull_marker_rawMarkers;
     hull_marker_rawMarkers = nil;
     [player] call hull_marker_fnc_addFireTeamMarkers;
+    ["marker.group.created", []] call hull_event_fnc_emitEvent;
 };
 
 hull_marker_fnc_addMarker = {

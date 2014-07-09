@@ -28,7 +28,7 @@ hull_briefing_fnc_addSideNotes = {
 };
 
 hull_briefing_fnc_addEventHandlers = {
-    ["player.initialized", hull_briefing_fnc_addNotes] call hull_event_fnc_addEventHandler;
+    ["marker.group.created", hull_briefing_fnc_addNotes] call hull_event_fnc_addEventHandler;
 };
 
 hull_briefing_fnc_preInit = {

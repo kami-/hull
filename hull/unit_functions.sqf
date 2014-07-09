@@ -36,7 +36,6 @@ hull_unit_fnc_playerInit = {
     [] call hull_marker_fnc_addMarkers;
     [] spawn hull_marker_fnc_updateAllMarkers;
     [] spawn hull_marker_fnc_updateCustomMarkers;
-    [] call hull_briefing_fnc_addNotes;
     [] call hull_mission_fnc_addPlayerEHs;
     [] spawn hull_mission_fnc_clientSafetyTimerLoop;
     [] call hull_unit_fnc_setFireTeamColors;
