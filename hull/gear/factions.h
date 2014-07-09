@@ -14,5 +14,5 @@ factions[] = {
     {"GUE", "AK74"},
     {"PMC_BAF", "XM8"},
     {"RU", "AK74M"},
-    {"USMC", "M4SOC"},
+    {"USMC", "M4SOC"}
 };
