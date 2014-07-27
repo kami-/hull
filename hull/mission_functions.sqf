@@ -68,17 +68,16 @@ hull_mission_fnc_setEnviroment = {
 
 hull_mission_fnc_broadcastEnviroment = {
     waitUntil {
-        hull_mission_syncEnviroment = [date, [overcast, fog, rain]];
+        hull_mission_syncEnviroment = [overcast, fog, rain];
         publicVariable "hull_mission_syncEnviroment";
-        sleep 30;
+        sleep 60;
         false;
     };
 };
 
 hull_mission_fnc_addPlayerEHs = {
     "hull_mission_syncEnviroment" addPublicVariableEventHandler {
-        setDate (_this select 1 select 0);
-        [10, _this select 1 select 1] call hull_mission_fnc_setWeather;
+        [10, _this select 1] call hull_mission_fnc_setWeather;
     };
 };
 
