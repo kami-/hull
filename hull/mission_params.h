@@ -19,10 +19,11 @@ class MissionParams {
 
     // Overcast, Fog, Rain
     weather[] = {
-        {0, 0, 0}, // Clear
-        {0.6, 0.1, 0}, // Overcast
-        {0.6, 0.4125, 0}, // Light Fog
-        {0.60, 0.85, 0}, // Heavy Fog
-        {1.00, 0.4125, 1} // Storm
+        {-1}, // Random
+        {0,     0,      0}, // Clear
+        {0.6,   0.1,    0}, // Overcast
+        {0.6,   0.4125, 0}, // Light Fog
+        {0.60,  0.85,   0}, // Heavy Fog
+        {1.00,  0.4125, 1} // Storm
     };
 };

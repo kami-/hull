@@ -45,6 +45,10 @@ hull_mission_fnc_getWeather = {
     if (isNil {hull_mission_weather}) then {
         hull_mission_weather = [0, 0, 0];
     };
+    if (hull_mission_weather select 0 == -1) then {
+        DECLARE(_weathers) = getArray (HULL_CONFIGFILE >> "MissionParams" >> "weather");
+        hull_mission_weather = _weathers select ((floor random ((count _weathers) - 1)) + 1);
+    };
 
     [hull_mission_weather select 0, hull_mission_weather select 1, hull_mission_weather select 2];
 };
