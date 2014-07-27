@@ -147,8 +147,6 @@ hull_gear_fnc_tryAssignRadios = {
     _gearTemplate = _unit getVariable "hull_gear_template";
     if (!isNil {_gearClass} && {!isNil {_gearTemplate}}) then {
         [_unit, getArray (GEAR_CONFIG >> _gearTemplate >> _gearClass >> "items")] call hull_gear_fnc_assignRadios;
-    } else {
-        ERROR("hull.gear.validate",FMT_3("No gear template '%1' or class '%2' was found for unit '%3'!",_gearTemplate,_gearClass,_unit));
     };
     ["gear.radio.assigned", [_unit]] call hull_event_fnc_emitEvent;
 };
