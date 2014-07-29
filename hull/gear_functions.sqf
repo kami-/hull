@@ -5,10 +5,14 @@
 #include "logbook.h"
 
 
-#define GEAR_CONFIG                         HULL_CONFIGFILE >> "Gear"
-#define GEAR_TEMPLATE_BASE_CLASS            "Rifleman"
+hull_gear_fnc_preInit = {
+    hull_gear_baseClass = ["Gear", "baseClass"] call hull_config_fnc_getText;
+    [] call hull_gear_fnc_addEventHandlers;
+};
 
-
+hull_gear_fnc_addEventHandlers = {
+    ["acre.initialized", hull_gear_fnc_tryAssignRadios] call hull_event_fnc_addEventHandler;
+};
 
 hull_gear_fnc_assign = {
     FUN_ARGS_3(_unit,_manualClass,_manualTemplate);
@@ -39,7 +43,7 @@ hull_gear_fnc_getTemplate = {
 
     private "_template";
     _template = _manualTemplate;
-    if (isNil {_template} || {!isClass (GEAR_CONFIG >> _manualTemplate)}) then {
+    if (isNil {_template} || {!isClass (["Gear", _manualTemplate] call hull_config_fnc_getConfig)}) then {
         _template = [_faction] call hull_gear_fnc_getTemplateByFaction;
     };
 
@@ -49,8 +53,8 @@ hull_gear_fnc_getTemplate = {
 hull_gear_fnc_getClass = {
     FUN_ARGS_2(_template,_manualClass);
 
-    if (!isClass (GEAR_CONFIG >> _template >> _manualClass)) then {
-        GEAR_TEMPLATE_BASE_CLASS;
+    if (!isClass (["Gear", _template, _manualClass] call hull_config_fnc_getConfig)) then {
+        hull_gear_baseClass;
     } else {
         _manualClass;
     };
@@ -59,8 +63,10 @@ hull_gear_fnc_getClass = {
 hull_gear_fnc_getTemplateByFaction = {
     FUN_ARGS_1(_faction);
 
-    private ["_factions", "_template"];
-    _factions = getArray (GEAR_CONFIG >> "factions");
+    private ["_factions", "_template", "_isFound"];
+    _factions = getArray (HULL_MISSION_CONFIG_FILE >> "Gear" >> "factions");
+    PUSH_ALL(_factions,getArray (HULL_CONFIG_FILE >> "Gear" >> "factions"));
+    _isFound = false;
     {
         if (toLower (_x select 0) == toLower _faction) exitWith {
             _template = _x select 1;
@@ -74,7 +80,7 @@ hull_gear_fnc_assignTemplate = {
     FUN_ARGS_3(_unit,_class,_template);
 
     private "_config";
-    _config = GEAR_CONFIG >> _template >> _class;
+    _config = ["Gear", _template, _class] call hull_config_fnc_getConfig;
     [_unit, getText (_config >> "ruck")] call hull_gear_fnc_assignRuck;
     [_unit, getArray (_config >> "magazines")] call hull_gear_fnc_assignMagazines;
     [_unit, getArray (_config >> "weapons")] call hull_gear_fnc_assignWeapons;
@@ -146,7 +152,7 @@ hull_gear_fnc_tryAssignRadios = {
     _gearClass = _unit getVariable "hull_gear_class";
     _gearTemplate = _unit getVariable "hull_gear_template";
     if (!isNil {_gearClass} && {!isNil {_gearTemplate}}) then {
-        [_unit, getArray (GEAR_CONFIG >> _gearTemplate >> _gearClass >> "items")] call hull_gear_fnc_assignRadios;
+        [_unit, ["Gear", _gearTemplate, _gearClass, "items"] call hull_config_fnc_getArray] call hull_gear_fnc_assignRadios;
     };
     ["gear.radio.assigned", [_unit]] call hull_event_fnc_emitEvent;
 };
@@ -197,7 +203,7 @@ hull_gear_fnc_validateTemplate = {
     private ["_error", "_factionTemplate", "_template", "_config", "_fields"];
     _error = false;
     _factionTemplate = [faction _unit] call hull_gear_fnc_getTemplateByFaction;
-    if (!isNil {_manualTemplate} && {!isClass (GEAR_CONFIG >> _manualTemplate)}) then {
+    if (!isNil {_manualTemplate} && {!isClass (["Gear", _manualTemplate] call hull_config_fnc_getConfig)}) then {
         WARN("hull.gear.validate",FMT_3("No gear template found with name '%1', using '%2' faction default '%3' instead!",_manualTemplate,faction _unit,_factionTemplate));
     };
 
@@ -207,16 +213,16 @@ hull_gear_fnc_validateTemplate = {
     };
 
     _template = [faction _unit, _manualTemplate] call hull_gear_fnc_getTemplate;
-    if (!_error && {!isClass (GEAR_CONFIG >> _template >> _manualClass)}) then {
-        WARN("hull.gear.validate",FMT_4("Class '%1' not found in gear template '%2', on unit '%3'! Using defalut '%4' instead.",_manualClass,_template,_unit,GEAR_TEMPLATE_BASE_CLASS));
-        _manualClass = GEAR_TEMPLATE_BASE_CLASS;
+    if (!_error && {!isClass (["Gear", _template, _manualClass] call hull_config_fnc_getConfig)}) then {
+        WARN("hull.gear.validate",FMT_4("Class '%1' not found in gear template '%2', on unit '%3'! Using defalut '%4' instead.",_manualClass,_template,_unit,hull_gear_baseClass));
+        _manualClass = hull_gear_baseClass;
     };
-    if (!_error && {!isClass (GEAR_CONFIG >> _template >> _manualClass)}) then {
+    if (!_error && {!isClass (["Gear", _template, _manualClass] call hull_config_fnc_getConfig)}) then {
         ERROR("hull.gear.validate",FMT_2("Default class '%1' not found in gear template '%2'!",_manualClass,_template));
         _error = true;
     };
 
-    _config = GEAR_CONFIG >> _template >> _manualClass;
+    _config = ["Gear", _template, _manualClass] call hull_config_fnc_getConfig;
     _fields = [
         ["ruck", {isText (_config >> _field)}],
         ["magazines", {isArray (_config >> _field)}],
@@ -237,12 +243,4 @@ hull_gear_fnc_validateTemplate = {
     } foreach _fields;
 
     _error;
-};
-
-hull_gear_fnc_addEventHandlers = {
-    ["acre.initialized", hull_gear_fnc_tryAssignRadios] call hull_event_fnc_addEventHandler;
-};
-
-hull_gear_fnc_preInit = {
-    [] call hull_gear_fnc_addEventHandlers;
 };

@@ -1,22 +1,5 @@
 #include "hull_macros.h"
 
-#define HULL_ACRE_SHORTRANGE_DEFAULT     "ACRE_PRC343"
-#define HULL_ACRE_SHORTRANGE_RADIOS      ["ACRE_PRC343"]
-#define HULL_ACRE_SHORTRANGE_BASEFREQ    2400
-
-#define HULL_ACRE_LONGRANGE_DEFAULT      "ACRE_PRC148"
-#define HULL_ACRE_LONGRANGE_RADIOS       ["ACRE_PRC148", "ACRE_PRC148_UHF", "ACRE_PRC117F", "ACRE_PRC119", "ACRE_PRC152"]
-#define HULL_ACRE_LONGRANGE_BASEFREQ     32
-
-#define HULL_ACRE_CHANNELSTEP            1
-
-#define HULL_ACRE_SIDE_WESTSTEP          0.2
-#define HULL_ACRE_SIDE_EASTSTEP          0.4
-#define HULL_ACRE_SIDE_RESISTANCESTEP    0.6
-#define HULL_ACRE_SIDE_DEFAULTSTEP       0.8
-
-
-
 hull_acre_fnc_preInit = {
     hull_acre_isInitialized = false;
     if (isDedicated) then {
@@ -34,8 +17,18 @@ hull_acre_fnc_setPlayerFrequencies = {
 };
 
 hull_acre_fnc_setFrequencies = {
-    [HULL_ACRE_SHORTRANGE_DEFAULT, HULL_ACRE_SHORTRANGE_RADIOS, HULL_ACRE_SHORTRANGE_BASEFREQ, HULL_ACRE_CHANNELSTEP] call hull_acre_fnc_setChannels;
-    [HULL_ACRE_LONGRANGE_DEFAULT, HULL_ACRE_LONGRANGE_RADIOS, HULL_ACRE_LONGRANGE_BASEFREQ, HULL_ACRE_CHANNELSTEP] call hull_acre_fnc_setChannels;
+    [
+        ["ACRE", "ShortRange", "default"] call hull_config_fnc_getText,
+        ["ACRE", "ShortRange", "radios"] call hull_config_fnc_getArray,
+        ["ACRE", "ShortRange", "baseFrequency"] call hull_config_fnc_getNumber,
+        ["ACRE", "Steps", "channel"] call hull_config_fnc_getNumber
+    ] call hull_acre_fnc_setChannels;
+    [
+        ["ACRE", "LongRange", "default"] call hull_config_fnc_getText,
+        ["ACRE", "LongRange", "radios"] call hull_config_fnc_getArray,
+        ["ACRE", "LongRange", "baseFrequency"] call hull_config_fnc_getNumber,
+        ["ACRE", "Steps", "channel"] call hull_config_fnc_getNumber
+    ] call hull_acre_fnc_setChannels;
 };
 
 hull_acre_fnc_setChannels = {
@@ -65,9 +58,9 @@ hull_acre_fnc_getCalculatedChannels = {
 hull_acre_fnc_getSideStep = {
     FUN_ARGS_1(_unit);
     call {
-        if (side player == WEST) exitWith {HULL_ACRE_SIDE_WESTSTEP};
-        if (side player == EAST) exitWith {HULL_ACRE_SIDE_EASTSTEP};
-        if (side player == RESISTANCE) exitWith {HULL_ACRE_SIDE_RESISTANCESTEP};
-        HULL_ACRE_SIDE_DEFAULTSTEP;
+        if (side player == WEST) exitWith {["ACRE", "Steps", "west"] call hull_config_fnc_getNumber};
+        if (side player == EAST) exitWith {["ACRE", "Steps", "east"] call hull_config_fnc_getNumber};
+        if (side player == RESISTANCE) exitWith {["ACRE", "Steps", "resistance"] call hull_config_fnc_getNumber};
+        ["ACRE", "Steps", "default"] call hull_config_fnc_getNumber;
     };
 };

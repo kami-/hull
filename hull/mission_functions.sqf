@@ -34,13 +34,13 @@ hull_mission_fnc_evaluateParams = {
 
 hull_mission_fnc_readMissionParamValues = {
     if (!isNil {hull_mission_date}) then {
-        hull_mission_date = (getArray (HULL_CONFIGFILE >> "MissionParams" >> "date")) select hull_mission_date;
+        hull_mission_date = (["MissionParams", "date"] call hull_config_fnc_getArray) select hull_mission_date;
     };
     if (!isNil {hull_mission_timeOfDay}) then {
-        hull_mission_timeOfDay = (getArray (HULL_CONFIGFILE >> "MissionParams" >> "time")) select hull_mission_timeOfDay;
+        hull_mission_timeOfDay = (["MissionParams", "time"] call hull_config_fnc_getArray) select hull_mission_timeOfDay;
     };
     if (!isNil {hull_mission_weather}) then {
-        hull_mission_weather = (getArray (HULL_CONFIGFILE >> "MissionParams" >> "weather")) select hull_mission_weather;
+        hull_mission_weather = (["MissionParams", "weather"] call hull_config_fnc_getArray) select hull_mission_weather;
     };
 };
 
@@ -60,7 +60,7 @@ hull_mission_fnc_getWeather = {
         hull_mission_weather = [0, 0, 0];
     };
     if (hull_mission_weather select 0 == -1) then {
-        DECLARE(_weathers) = getArray (HULL_CONFIGFILE >> "MissionParams" >> "weather");
+        DECLARE(_weathers) = ["MissionParams", "weather"] call hull_config_fnc_getArray;
         hull_mission_weather = _weathers select ((floor random ((count _weathers) - 1)) + 1);
     };
 
@@ -147,7 +147,7 @@ hull_mission_fnc_clientSafetyTimerLoop = {
 
 hull_mission_fnc_addHostSafetyTimerStopAction = {
     if (serverCommandAvailable "#kick") then {
-        player addAction ["Disable weapon safety", "hull\mission_host_safetytimer_stop.sqf", [], 3, false, false, "", "driver _target == _this && {hull_mission_safetyTimer > 0}"];
+        player addAction ["Disable weapon safety", ADDON_PATH(mission_host_safetytimer_stop.sqf), [], 3, false, false, "", "driver _target == _this && {hull_mission_safetyTimer > 0}"];
     };
 };
 
