@@ -45,7 +45,7 @@ hull_marker_fnc_addGroupMarker = {
         if (toLower _gearClass == "ftl") exitWith {
             (group _unit) setGroupId [_markerText];
             _markerName = format ["hull_marker_group_%1_%2", _markerText, group _unit];
-            [_markerName, getPosATL _unit, "ICON", "b_recon", _markerColor, _markerText] call hull_marker_fnc_createMarker;
+            [_markerName, getPosATL _unit, "ICON", "b_inf", _markerColor, _markerText] call hull_marker_fnc_createMarker;
             (group _unit) setVariable ["hull_marker_group", _markerName, false];
             PUSH(hull_marker_groups,group _unit);
         };
