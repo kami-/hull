@@ -49,11 +49,13 @@ hull_unit_fnc_foreachNonPlayerUnits = {
 hull_unit_fnc_addEHs = {
     FUN_ARGS_1(_unit);
 
-    private "_ehId";
-    _ehId = _unit addEventHandler ["HandleDamage", {_this call hull_unit_fnc_friendlyFireEH;}];
-    _unit setVariable ["hull_eh_friendlyFire", _ehId];
-    _ehId = _unit addEventHandler ["Killed", {_this call hull_unit_fnc_killedEH;}];
-    _unit setVariable ["hull_eh_killed", _ehId];
+    if (_unit isKindOf "CAManBase") then {
+        private "_ehId";
+        _ehId = _unit addEventHandler ["HandleDamage", {_this call hull_unit_fnc_friendlyFireEH;}];
+        _unit setVariable ["hull_eh_friendlyFire", _ehId];
+        _ehId = _unit addEventHandler ["Killed", {_this call hull_unit_fnc_killedEH;}];
+        _unit setVariable ["hull_eh_killed", _ehId];
+    };
 };
 
 hull_unit_fnc_addFiredEHs = {

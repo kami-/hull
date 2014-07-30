@@ -10,6 +10,26 @@
 #define HULL_MISSION_CONFIG_FILE        missionConfigFile >> HULL_BASE_CONFIG
 #define HULL_CONFIG_FILE                configFile >> HULL_BASE_CONFIG
 
+#define GEAR_UNIT_FIELDS                \
+    [ \
+        ["ruck", {isText (_config >> _field)}], \
+        ["magazines", {isArray (_config >> _field)}], \
+        ["weapons", {isArray (_config >> _field)}], \
+        ["ruckWeapons", {isArray (_config >> _field)}], \
+        ["ruckMagazines", {isArray (_config >> _field)}], \
+        ["items", {isArray (_config >> _field)}], \
+        ["ifak", {isArray (_config >> _field)}], \
+        ["code", {isText (_config >> _field)}] \
+    ]
+
+#define GEAR_VEHICLE_FIELDS             \
+    [ \
+        ["magazines", {isArray (_config >> _field)}], \
+        ["weapons", {isArray (_config >> _field)}], \
+        ["items", {isArray (_config >> _field)}], \
+        ["code", {isText (_config >> _field)}] \
+    ]
+
 // WARNING
 // Macros are sensitive for "," (comma), "(", ")" (parenthese) and " " (space).
 // Provide only the asked numbers of arguments, without additional commas and without spaces beetween commas.

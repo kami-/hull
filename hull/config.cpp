@@ -55,6 +55,7 @@ class Hull {
     class Gear {
         #include "gear\factions.h"
 
+        #include "gear\Default.h"
         #include "gear\AK103.h"
         #include "gear\AK74.h"
         #include "gear\AK74M.h"
@@ -68,7 +69,8 @@ class Hull {
         #include "gear\SCAR.h"
         #include "gear\XM8.h"
 
-        baseClass = "Rifleman";
+        unitBaseClass = "Rifleman";
+        vehicleBaseClass = "Vehicle";
     };
 
     class Briefing {
