@@ -162,6 +162,18 @@ hull_marker_fnc_addFireTeamMarker = {
     PUSH(hull_marker_fireTeam,_unit);
 };
 
+hull_marker_fnc_addCustomSideMarker = {
+    FUN_ARGS_2(_object,_side);
+
+    if (side player == _side) then {
+        DECLARE(_arguments) = [_object];
+        for "_i" from 2 to (count _this) - 1 do {
+            PUSH(_arguments,_this select _i);
+        };
+        _arguments call hull_marker_fnc_addCustomMarker;
+    };
+};
+
 hull_marker_fnc_addCustomMarker = {
     FUN_ARGS_1(_object);
 
