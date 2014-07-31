@@ -157,6 +157,6 @@ class Hull {
     class General {
         addRating = 999999;                             // Rating added to units, to supress negative ratings
         BIS_noCoreConversations = 1;                    // Disables BIS unit conversations
-        enableSaving = 1;                               // Disables game saving
+        enableSaving = 0;                               // Enables game saving
     };
 };
