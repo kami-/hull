@@ -31,10 +31,10 @@ hull_marker_fnc_addGroupMarkers = {
                 _x call hull_marker_fnc_addGroupMarker;
             };
         } foreach hull_marker_rawGroupMarkers;
-        hull_marker_rawGroupMarkers = nil;
         PUSH(hull_marker_updatableMarkers,AS_ARRAY_2(hull_marker_groups,hull_marker_fnc_updateGroupMarkers));
         PUSH(hull_marker_updatableMarkers,AS_ARRAY_2(hull_marker_medics,hull_marker_fnc_updateMedicMarkers));
     };
+    hull_marker_rawGroupMarkers = nil;
 };
 
 hull_marker_fnc_addGroupMarker = {
@@ -160,6 +160,12 @@ hull_marker_fnc_addFireTeamMarker = {
     ] call hull_marker_fnc_createMarker;
     _unit setVariable ["hull_marker_fireTeam", _markerName];
     PUSH(hull_marker_fireTeam,_unit);
+};
+
+hull_marker_fnc_addXoMarker = {
+    FUN_ARGS_1(_unit);
+
+    [_unit, side _unit, hull_marker_defaultDelay, "ICON", "b_empty", "ColorYellow", [1, 1], "XO"] call hull_marker_fnc_addCustomSideMarker;
 };
 
 hull_marker_fnc_addCustomSideMarker = {
