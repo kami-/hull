@@ -1,7 +1,7 @@
 factions[] = {
     {"Default", "Default"},
     {"BIS_BAF", "L85"},
-    {"BIS_CZ", "AK74"},
+    {"BIS_CZ", "SA58"},
     {"BIS_GER", "G36"},
     {"BIS_TK", "AK74"},
     {"BIS_TK_GUE", "AKM"},
@@ -15,5 +15,7 @@ factions[] = {
     {"GUE", "AK74"},
     {"PMC_BAF", "XM8"},
     {"RU", "AK74M"},
-    {"USMC", "M4SOC"}
+    {"USMC", "M4SOC"},
+    {"usm_usarmy", "M16A2"},
+    {"usm_usmarinecorps", "M16A2"},
 };
