@@ -1,3 +1,5 @@
+#include "hull\hull.h"
+
 class Header
 {
     gameType = Coop;
