@@ -38,7 +38,7 @@ hull_settings_fnc_setStandardAceSettings = {
     ];
 
     {
-        ["ACE", _x select 0] call (_typeFunctions select (_x select 1));
+        missionNamespace setVariable [_x select 0, ["ACE", _x select 0] call (_typeFunctions select (_x select 1))];
     } foreach _rawVariables;
 };
 
