@@ -1,7 +1,34 @@
 #ifndef HULL_MACROS_H
 #define HULL_MACROS_H
 
-#define HULL_CONFIGFILE            missionConfigFile >> "Hull"
+#define HULL_VERSION                    "0.5.0"
+
+#define CONCAT_ADDON_PATH(FILE)         x\ark\addons\hull\FILE
+#define ADDON_PATH(FILE)                #CONCAT_ADDON_PATH(FILE)
+
+#define HULL_BASE_CONFIG                "Hull"
+#define HULL_MISSION_CONFIG_FILE        missionConfigFile >> HULL_BASE_CONFIG
+#define HULL_CONFIG_FILE                configFile >> HULL_BASE_CONFIG
+
+#define GEAR_UNIT_FIELDS                \
+    [ \
+        ["ruck", {isText (_config >> _field)}], \
+        ["magazines", {isArray (_config >> _field)}], \
+        ["weapons", {isArray (_config >> _field)}], \
+        ["ruckWeapons", {isArray (_config >> _field)}], \
+        ["ruckMagazines", {isArray (_config >> _field)}], \
+        ["items", {isArray (_config >> _field)}], \
+        ["ifak", {isArray (_config >> _field)}], \
+        ["code", {isText (_config >> _field)}] \
+    ]
+
+#define GEAR_VEHICLE_FIELDS             \
+    [ \
+        ["magazines", {isArray (_config >> _field)}], \
+        ["weapons", {isArray (_config >> _field)}], \
+        ["items", {isArray (_config >> _field)}], \
+        ["code", {isText (_config >> _field)}] \
+    ]
 
 // WARNING
 // Macros are sensitive for "," (comma), "(", ")" (parenthese) and " " (space).

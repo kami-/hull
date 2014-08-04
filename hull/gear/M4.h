@@ -1,6 +1,6 @@
-class L85 {
+class M4 {
     class Rifleman {
-        weapons[] = {"BAF_L85A2_RIS_Holo"};
+        weapons[] = {"ACE_M4A1_F"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 9},
             {"HandGrenade_West", 2},
@@ -19,7 +19,7 @@ class L85 {
     };
 
     class Leader : Rifleman {
-        weapons[] = {"BAF_L85A2_UGL_Holo"};
+        weapons[] = {"ACE_M4A1_GL"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
             {"ACE_30Rnd_556x45_T_Stanag", 3},
@@ -47,9 +47,9 @@ class L85 {
     };
 
     class Crew : Rifleman {
-        weapons[] = {"MP5A5"};
+        weapons[] = {"ACE_M4A1_C"};
         magazines[] = {
-            {"30Rnd_9x19_MP5", 6},
+            {"ACE_M4A1_C", 4},
             {"SmokeShell", 1},
             {"SmokeShellGreen", 1}
         };
@@ -69,6 +69,7 @@ class L85 {
     };
 
     class Medic : Rifleman {
+        weapons[] = {"ACE_M4A1_C"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
             {"SmokeShell", 2},
@@ -91,7 +92,7 @@ class L85 {
     };
 
     class AR : Rifleman {
-        weapons[] = {"BAF_L110A1_Aim"};
+        weapons[] = {"M249_EP1"};
         magazines[] = {
             {"100Rnd_556x45_M249", 3},
             {"ACE_100Rnd_556x45_T_M249", 3},
@@ -115,11 +116,11 @@ class L85 {
     };
 
     class RAT : Rifleman {
-        weapons[] = {"BAF_L85A2_RIS_Holo", "M136"};
+        weapons[] = {"ACE_M4A1_F", "M136"};
     };
 
     class MMGG : Rifleman {
-        weapons[] = {"ACE_M60"};
+        weapons[] = {"M240"};
         magazines[] = {
             {"100Rnd_762x51_M240", 5},
             {"SmokeShell", 1}
@@ -144,7 +145,7 @@ class L85 {
     };
 
     class HMGG : Rifleman {
-        weapons[] = {"BAF_L85A2_RIS_Holo", "ACE_M2HBProxy"};
+        weapons[] = {"ACE_M4A1_F", "ACE_M2HBProxy"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
             {"SmokeShell", 1}
@@ -155,7 +156,7 @@ class L85 {
     };
 
     class HMGAG : Rifleman {
-        weapons[] = {"BAF_L85A2_RIS_Holo", "ACE_M3TripodProxy"};
+        weapons[] = {"ACE_M4A1_F", "ACE_M3TripodProxy"};
         magazines[] = {
             {"30Rnd_556x45_Stanag",  8},
             {"HandGrenade_West", 1},
@@ -185,11 +186,12 @@ class L85 {
     };
 
     class MATG : Rifleman {
-        weapons[] = {"BAF_L85A2_RIS_Holo", "MAAWS"};
+        weapons[] = {"ACE_M4A1_F", "SMAW"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
-            {"MAAWS_HEAT", 2},
-            {"SmokeShell", 1}
+            {"SMAW_HEAA", 2},
+            {"SmokeShell", 1},
+            {"ACE_SMAW_Spotting", 3}
         };
         ruckMagazines[] = {
         };
@@ -199,15 +201,14 @@ class L85 {
     class MATAG : Rifleman {
         magazines[] = {
             {"30Rnd_556x45_Stanag",  8},
-            {"MAAWS_HEAT", 1},
+            {"SMAW_HEAA", 1},
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
         };
         ruckMagazines[] = {
             {"30Rnd_556x45_Stanag", 2},
             {"ACE_30Rnd_556x45_T_Stanag", 2},
-            {"ACE_MAAWS_HE", 1},
-            {"MAAWS_HEAT", 2}
+            {"SMAW_HEAA", 2}
         };
         items[] = {"ACRE_PRC343", "Binocular_Vector"};
     };
@@ -215,20 +216,19 @@ class L85 {
     class MATAC : Rifleman {
         magazines[] = {
             {"30Rnd_556x45_Stanag", 8},
-            {"MAAWS_HEAT", 1},
-            {"ACE_MAAWS_HE", 1},
+            {"SMAW_HEAA", 1},
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
         };
         ruckMagazines[] = {
             {"30Rnd_556x45_Stanag", 2},
             {"ACE_30Rnd_556x45_T_Stanag", 2},
-            {"MAAWS_HEAT", 2}
+            {"SMAW_HEAA", 2}
         };
     };
 
     class HATG : Rifleman {
-        weapons[] = {"BAF_L85A2_RIS_Holo", "ACE_Javelin_Direct"};
+        weapons[] = {"ACE_M4A1_F", "ACE_Javelin_Direct"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 6},
             {"SmokeShell", 1}
@@ -239,7 +239,7 @@ class L85 {
     };
 
     class HATAG : Rifleman {
-        weapons[] = {"BAF_L85A2_RIS_Holo", "ACE_Javelin_Direct"};
+        weapons[] = {"ACE_M4A1_F", "ACE_Javelin_Direct"};
         magazines[] = {
             {"30Rnd_556x45_Stanag",  8},
             {"HandGrenade_West", 1},
@@ -254,7 +254,7 @@ class L85 {
     };
 
     class HATAC : Rifleman {
-        weapons[] = {"BAF_L85A2_RIS_Holo", "ACE_Javelin_Direct"};
+        weapons[] = {"ACE_M4A1_F", "ACE_Javelin_Direct"};
         magazines[] = {
             {"30Rnd_556x45_Stanag", 8},
             {"HandGrenade_West", 1},
@@ -298,9 +298,9 @@ class L85 {
     };
 
     class SN : Rifleman {
-        weapons[] = {"BAF_LRR_scoped", "M9SD"};
+        weapons[] = {"M24_des_EP1", "M9SD"};
         magazines[] = {
-            {"5Rnd_86x70_L115A1",  2},
+            {"5Rnd_762x51_M24",  2},
             {"15Rnd_9x19_M9SD",  5},
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
@@ -341,15 +341,14 @@ class L85 {
 
     class Vehicle {
         weapons[] = {
-            {"BAF_L85A2_RIS_Holo", 2},
+            {"ACE_M4A1_F", 2},
             {"M136", 2},
-            {"MP5A5", 2}
+            {"ACE_M4A1_C", 2}
         };
         magazines[] = {
             {"30Rnd_556x45_Stanag", 20},
             {"ACE_100Rnd_556x45_T_M249", 10},
             {"ACE_30Rnd_556x45_T_Stanag", 10},
-            {"30Rnd_9x19_MP5", 10},
             {"100Rnd_762x51_M240", 5},
             {"1Rnd_SmokeRed_M203", 5},
             {"1Rnd_SmokeGreen_M203", 5},
@@ -368,19 +367,18 @@ class L85 {
 
     class Truck : Vehicle {
         weapons[] = {
-            {"BAF_L85A2_RIS_Holo", 5},
+            {"ACE_M4A1_F", 5},
             {"M136", 5},
-            {"MP5A5", 5}
+            {"ACE_M4A1_C", 5}
         };
         magazines[] = {
             {"30Rnd_556x45_Stanag", 50},
             {"ACE_100Rnd_556x45_T_M249", 20},
             {"ACE_30Rnd_556x45_T_Stanag", 25},
-            {"30Rnd_9x19_MP5", 10},
             {"100Rnd_762x51_M240", 10},
             {"ACE_M2_CSWDM", 5},
             {"mine", 4},
-            {"MAAWS_HEAT", 5},
+            {"SMAW_HEAA", 5},
             {"1Rnd_SmokeRed_M203", 10},
             {"1Rnd_SmokeGreen_M203", 10},
             {"HandGrenade_West", 10},
@@ -397,7 +395,7 @@ class L85 {
             {"ACE_100Rnd_556x45_T_M249", 10},
             {"ACE_30Rnd_556x45_T_Stanag", 10},
             {"100Rnd_762x51_M240", 5},
-            {"MAAWS_HEAT", 2},
+            {"SMAW_HEAA", 2},
             {"1Rnd_SmokeRed_M203", 10},
             {"1Rnd_SmokeGreen_M203", 10},
             {"HandGrenade_West", 10},

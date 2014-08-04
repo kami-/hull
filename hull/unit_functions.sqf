@@ -5,11 +5,6 @@
 #include "logbook.h"
 
 
-#define HULL_TEAMCOLOR_RED ["FTL", "RAT"]
-#define HULL_TEAMCOLOR_BLUE ["AR", "AAR"]
-
-
-
 hull_unit_fnc_init = {
     FUN_ARGS_3(_unit,_gearConfig,_markerConfig);
 
@@ -54,11 +49,13 @@ hull_unit_fnc_foreachNonPlayerUnits = {
 hull_unit_fnc_addEHs = {
     FUN_ARGS_1(_unit);
 
-    private "_ehId";
-    _ehId = _unit addEventHandler ["HandleDamage", {_this call hull_unit_fnc_friendlyFireEH;}];
-    _unit setVariable ["hull_eh_friendlyFire", _ehId];
-    _ehId = _unit addEventHandler ["Killed", {_this call hull_unit_fnc_killedEH;}];
-    _unit setVariable ["hull_eh_killed", _ehId];
+    if (_unit isKindOf "CAManBase") then {
+        private "_ehId";
+        _ehId = _unit addEventHandler ["HandleDamage", {_this call hull_unit_fnc_friendlyFireEH;}];
+        _unit setVariable ["hull_eh_friendlyFire", _ehId];
+        _ehId = _unit addEventHandler ["Killed", {_this call hull_unit_fnc_killedEH;}];
+        _unit setVariable ["hull_eh_killed", _ehId];
+    };
 };
 
 hull_unit_fnc_addFiredEHs = {
@@ -94,16 +91,22 @@ hull_unit_fnc_killedEH = {
     _unit setVariable ["hull_eh_killed", nil];
 };
 
+hull_unit_fnc_getAssignedTeam = {
+    FUN_ARGS_1(_gearClass);
+
+    DECLARE(_team) = "";
+    {
+        if (_gearClass == _x select 0) exitWith {_team = _x select 1};
+    } foreach (["Group", "assignedTeams"] call hull_config_fnc_getArray);
+
+    _team;
+};
+
 hull_unit_fnc_setFireTeamColors = {
-    if (count units group player == 4) then {
-        {
-            _x assignTeam call {
-                private "_gearClass";
-                _gearClass = _x getVariable "hull_gear_class";
-                if (_gearClass in HULL_TEAMCOLOR_RED) exitWith {"RED"};
-                if (_gearClass in HULL_TEAMCOLOR_BLUE) exitWith {"BLUE"};
-                "BLUE";
-            };
-        } foreach units group player;
-    };
+    {
+        DECLARE(_assignedTeam) = [_x getVariable "hull_gear_class"] call hull_unit_fnc_getAssignedTeam;
+        if (_assignedTeam != "") then {
+            _x assignTeam _assignedTeam;
+        };
+    } foreach units group player;
 };

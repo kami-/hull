@@ -1,6 +1,15 @@
 #include "hull_macros.h"
 
+hull_briefing_fnc_preInit = {
+    [] call hull_briefing_fnc_addEventHandlers;
+};
+
+hull_briefing_fnc_addEventHandlers = {
+    ["marker.group.created", hull_briefing_fnc_addNotes] call hull_event_fnc_addEventHandler;
+};
+
 hull_briefing_fnc_addNotes = {
+    [] call compile preprocessFile ADDON_PATH(briefing\hull.sqf);
     [] call hull_briefing_fnc_addOrbat;
     [] call hull_briefing_fnc_addSideNotes;
 };
@@ -26,18 +35,11 @@ hull_briefing_fnc_addOrbat = {
 hull_briefing_fnc_addSideNotes = {
     private "_briefingFile";
     call {
-        if (side player == WEST) exitWith {_briefingFile = "hull\briefing\blufor.sqf"};
-        if (side player == EAST) exitWith {_briefingFile = "hull\briefing\opfor.sqf"};
-        if (side player == RESISTANCE) exitWith {_briefingFile = "hull\briefing\indfor.sqf"};
-        if (side player == CIVILIAN) exitWith {_briefingFile = "hull\briefing\civilian.sqf"};
+        if (side player == WEST) exitWith {_briefingFile = ["Briefing", "blufor"] call hull_config_fnc_getText};
+        if (side player == EAST) exitWith {_briefingFile = ["Briefing", "opfor"] call hull_config_fnc_getText};
+        if (side player == RESISTANCE) exitWith {_briefingFile = ["Briefing", "indfor"] call hull_config_fnc_getText};
+        if (side player == CIVILIAN) exitWith {_briefingFile = ["Briefing", "civilian"] call hull_config_fnc_getText};
     };
     [] call compile preprocessFile _briefingFile;
 };
 
-hull_briefing_fnc_addEventHandlers = {
-    ["marker.group.created", hull_briefing_fnc_addNotes] call hull_event_fnc_addEventHandler;
-};
-
-hull_briefing_fnc_preInit = {
-    [] call hull_briefing_fnc_addEventHandlers;
-};
