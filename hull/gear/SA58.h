@@ -24,8 +24,7 @@ class SA58 {
             {"30Rnd_762x39_SA58", 6},
             {"ACE_30Rnd_762x39_T_SA58", 3},
             {"HandGrenade_East", 1},
-            {"SmokeShell", 2},
-            {"1Rnd_SmokeGreen_GP25", 1}
+            {"SmokeShell", 2}
         };
         ruckMagazines[] = {
             {"30Rnd_762x39_SA58", 3},
@@ -348,8 +347,6 @@ class SA58 {
             {"ACE_40Rnd_B_46x30_MP7", 10},
             {"100Rnd_762x51_M240", 5},
             {"PG7V", 5},
-            {"1Rnd_SmokeRed_GP25", 5},
-            {"1Rnd_SmokeGreen_M203", 5},
             {"HandGrenade_East", 10},
             {"SmokeShell", 5}
         };
@@ -378,8 +375,6 @@ class SA58 {
             {"mine", 4},
             {"PG7V", 8},
             {"MAAWS_HEAT", 5},
-            {"1Rnd_SmokeRed_GP25", 10},
-            {"1Rnd_SmokeGreen_GP25", 10},
             {"HandGrenade_East", 10},
             {"SmokeShell", 10}
         };
@@ -396,8 +391,6 @@ class SA58 {
             {"100Rnd_762x51_M240", 5},
             {"PG7V", 4},
             {"MAAWS_HEAT", 2},
-            {"1Rnd_SmokeRed_GP25", 10},
-            {"1Rnd_SmokeGreen_GP25", 10},
             {"HandGrenade_East", 10},
             {"SmokeShell", 5}
         };
