@@ -1,7 +1,7 @@
 #ifndef HULL_MACROS_H
 #define HULL_MACROS_H
 
-#define HULL_VERSION                    "0.5.0"
+#define HULL_VERSION                    "0.5.1"
 
 #define CONCAT_ADDON_PATH(FILE)         x\ark\addons\hull\FILE
 #define ADDON_PATH(FILE)                #CONCAT_ADDON_PATH(FILE)
