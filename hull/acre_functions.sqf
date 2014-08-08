@@ -1,10 +1,18 @@
 #include "hull_macros.h"
 
+#include "logbook.h"
+
+
 hull_acre_fnc_preInit = {
+    [] call hull_acre_fnc_addEventHandlers;
     hull_acre_isInitialized = false;
     if (isDedicated) then {
         hull_acre_isInitialized = true;
     };
+};
+
+hull_acre_fnc_addEventHandlers = {
+    ["player.initialized", hull_acre_fnc_playerInit] call hull_event_fnc_addEventHandler;
 };
 
 hull_acre_fnc_setPlayerFrequencies = {
@@ -14,6 +22,29 @@ hull_acre_fnc_setPlayerFrequencies = {
     [] call hull_acre_fnc_setFrequencies;
     hull_acre_isInitialized = true;
     ["acre.initialized", [player]] call hull_event_fnc_emitEvent;
+};
+
+hull_acre_fnc_playerInit = {
+    DEBUG("hull.acre.jip","ACRE player init called.");
+    if (alive player) then {
+        DEBUG("hull.acre.jip","Player is alive, starting spectator check.");
+        [] spawn {
+            waitUntil {
+                DEBUG("hull.acre.jip",FMT_2("Waiting for ACRE to initialize TS ID '%1' and spectator list '%2'.",acre_sys_core_ts3id,ACRE_SPECTATORS_LIST));
+                sleep 5;
+                !isNil {acre_sys_core_ts3id} && {acre_sys_core_ts3id != -1} && {!isNil {ACRE_SPECTATORS_LIST}}; // wait for ACRE to set ts3id and spectator list
+            };
+            DEBUG("hull.acre.jip",FMT_2("ACRE init finished with TS ID '%1' and spectator list '%2'.",acre_sys_core_ts3id,ACRE_SPECTATORS_LIST));
+            if (acre_sys_core_ts3id in ACRE_SPECTATORS_LIST) then {
+                DEBUG("hull.acre.jip",FMT_2("TS ID '%1' found in spectator list '%2'.",acre_sys_core_ts3id,ACRE_SPECTATORS_LIST));
+                [false] call acre_api_fnc_setSpectator;
+                DEBUG("hull.acre.jip","Setting ACRE spectator to false.");
+            };
+        };
+    } else {
+        DEBUG("hull.acre.jip","Player is dead, starting setting ACRE spectator to true.");
+        [true] call acre_api_fnc_setSpectator;
+    };
 };
 
 hull_acre_fnc_setFrequencies = {
