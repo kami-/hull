@@ -4,6 +4,7 @@
 #define LOGGING_TO_RPT
 #include "logbook.h"
 
+
 hull_gear_fnc_preInit = {
     hull_gear_unitBaseClass = ["Gear", "unitBaseClass"] call hull_config_fnc_getText;
     hull_gear_vehicleBaseClass = ["Gear", "vehicleBaseClass"] call hull_config_fnc_getText;
@@ -102,28 +103,39 @@ hull_gear_fnc_getTemplateByFaction = {
 hull_gear_fnc_assignUnitTemplate = {
     FUN_ARGS_3(_unit,_class,_template);
 
-    private "_config";
-    _config = ["Gear", _template, _class] call hull_config_fnc_getConfig;
-    [_unit, getText (_config >> "ruck")] call hull_gear_fnc_assignRuck;
-    [_unit, getArray (_config >> "magazines")] call hull_gear_fnc_assignMagazines;
-    [_unit, getArray (_config >> "weapons")] call hull_gear_fnc_assignWeapons;
-    [_unit, getArray (_config >> "ruckWeapons")] call hull_gear_fnc_assignRuckWeapons;
-    [_unit, getArray (_config >> "ruckMagazines")] call hull_gear_fnc_assignRuckMagazines;
-    [_unit, getArray (_config >> "items")] call hull_gear_fnc_assignNonRadioItems;
-    [_unit, getArray (_config >> "ifak")] call hull_gear_fnc_assignIFAK;
-    [_unit, _class, _template] call compile getText (_config >> "code");
+    DECLARE(_assignables) = [
+        ["ruck",            CONFIG_TYPE_TEXT,   hull_gear_fnc_assignRuck],
+        ["magazines",       CONFIG_TYPE_ARRAY,  hull_gear_fnc_assignMagazines],
+        ["weapons",         CONFIG_TYPE_ARRAY,  hull_gear_fnc_assignWeapons],
+        ["ruckWeapons",     CONFIG_TYPE_ARRAY,  hull_gear_fnc_assignRuckWeapons],
+        ["ruckMagazines",   CONFIG_TYPE_ARRAY,  hull_gear_fnc_assignRuckMagazines],
+        ["items",           CONFIG_TYPE_ARRAY,  hull_gear_fnc_assignNonRadioItems],
+        ["ifak",            CONFIG_TYPE_ARRAY,  hull_gear_fnc_assignIFAK]
+    ];
+    [_unit, _class, _template, _assignables] call hull_gear_fnc_assignObjectTemplate;
     _unit selectWeapon primaryWeapon _unit;
 };
 
 hull_gear_fnc_assignVehicleTemplate = {
     FUN_ARGS_3(_vehicle,_class,_template);
 
-    private "_config";
-    _config = ["Gear", _template, _class] call hull_config_fnc_getConfig;
-    [_vehicle, getArray (_config >> "magazines")] call hull_gear_fnc_assignVehicleMagazines;
-    [_vehicle, getArray (_config >> "weapons")] call hull_gear_fnc_assignVehicleWeapons;
-    [_vehicle, getArray (_config >> "items")] call hull_gear_fnc_assignVehicleWeapons;
-    [_vehicle, _class, _template] call compile getText (_config >> "code");
+    DECLARE(_assignables) = [
+        ["magazines",       CONFIG_TYPE_ARRAY,  hull_gear_fnc_assignVehicleMagazines],
+        ["weapons",         CONFIG_TYPE_ARRAY,  hull_gear_fnc_assignVehicleWeapons],
+        ["items",           CONFIG_TYPE_ARRAY,  hull_gear_fnc_assignVehicleWeapons]
+    ];
+    [_vehicle, _class, _template, _assignables] call hull_gear_fnc_assignObjectTemplate;
+};
+
+hull_gear_fnc_assignObjectTemplate = {
+    FUN_ARGS_4(_object,_class,_template,_assignables);
+
+    {
+        DECLARE(_configValue) = ["Gear", _template, _class, _x select 0] call (CONFIG_TYPE_FUNCTIONS select (_x select 1));
+        DEBUG("hull.gear.assign",FMT_3("assignable='%1'; type='%2'; value='%3'",_x select 0, _x select 1,_configValue));
+        [_object, _configValue] call (_x select 2);
+    } foreach _assignables;
+    [_object, _class, _template] call compile (["Gear", _template, _class, "code"] call hull_config_fnc_getText);
 };
 
 hull_gear_fnc_assignRuck = {
@@ -250,7 +262,7 @@ hull_gear_fnc_assignIFAK = {
 hull_gear_fnc_validateTemplate = {
     FUN_ARGS_5(_unit,_manualClass,_manualTemplate,_baseClass,_fields);
 
-    private ["_error", "_factionTemplate", "_template", "_config"];
+    private ["_error", "_factionTemplate", "_template"];
     _error = false;
     _factionTemplate = [faction _unit] call hull_gear_fnc_getTemplateByFaction;
     if (!isNil {_manualTemplate} && {!isClass (["Gear", _manualTemplate] call hull_config_fnc_getConfig)}) then {
@@ -272,10 +284,8 @@ hull_gear_fnc_validateTemplate = {
         _error = true;
     };
 
-    _config = ["Gear", _template, _manualClass] call hull_config_fnc_getConfig;
     {
-        private "_field";
-        _field = _x select 0;
+        DECLARE(_config) = ["Gear", _template, _manualClass, _x select 0] call hull_config_fnc_getConfig;
         if (!_error && {!call (_x select 1)}) then {
             ERROR("hull.gear.validate",FMT_3("Field '%1' not found in template '%2' and in class '%3'!",_field,_template,_manualClass));
             _error = true;

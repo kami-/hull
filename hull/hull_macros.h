@@ -18,22 +18,22 @@
 
 #define GEAR_UNIT_FIELDS                \
     [ \
-        ["ruck", {isText (_config >> _field)}], \
-        ["magazines", {isArray (_config >> _field)}], \
-        ["weapons", {isArray (_config >> _field)}], \
-        ["ruckWeapons", {isArray (_config >> _field)}], \
-        ["ruckMagazines", {isArray (_config >> _field)}], \
-        ["items", {isArray (_config >> _field)}], \
-        ["ifak", {isArray (_config >> _field)}], \
-        ["code", {isText (_config >> _field)}] \
+        ["ruck", {isText _config}], \
+        ["magazines", {isArray _config}], \
+        ["weapons", {isArray _config}], \
+        ["ruckWeapons", {isArray _config}], \
+        ["ruckMagazines", {isArray _config}], \
+        ["items", {isArray _config}], \
+        ["ifak", {isArray _config}], \
+        ["code", {isText _config}] \
     ]
 
 #define GEAR_VEHICLE_FIELDS             \
     [ \
-        ["magazines", {isArray (_config >> _field)}], \
-        ["weapons", {isArray (_config >> _field)}], \
-        ["items", {isArray (_config >> _field)}], \
-        ["code", {isText (_config >> _field)}] \
+        ["magazines", {isArray _config}], \
+        ["weapons", {isArray _config}], \
+        ["items", {isArray _config}], \
+        ["code", {isText _config}] \
     ]
 
 // WARNING
