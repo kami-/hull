@@ -10,6 +10,12 @@
 #define HULL_MISSION_CONFIG_FILE        missionConfigFile >> HULL_BASE_CONFIG
 #define HULL_CONFIG_FILE                configFile >> HULL_BASE_CONFIG
 
+#define CONFIG_TYPE_BOOL                0
+#define CONFIG_TYPE_NUMBER              1
+#define CONFIG_TYPE_TEXT                2
+#define CONFIG_TYPE_ARRAY               3
+#define CONFIG_TYPE_FUNCTIONS           [hull_config_fnc_getBool, hull_config_fnc_getNumber, hull_config_fnc_getText, hull_config_fnc_getArray]
+
 #define GEAR_UNIT_FIELDS                \
     [ \
         ["ruck", {isText (_config >> _field)}], \

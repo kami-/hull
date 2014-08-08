@@ -1,9 +1,5 @@
 #include "hull_macros.h"
 
-#define TYPE_BOOL               0
-#define TYPE_NUMBER             1
-
-
 hull_settings_fnc_preInit = {
     [] call hull_settings_fnc_addEventHandlers;
 };
@@ -21,20 +17,20 @@ hull_settings_fnc_addEventHandlers = {
 
 hull_settings_fnc_setStandardAceSettings = {
     private ["_typeFunctions" ,"_rawVariables"];
-    _typeFunctions = [hull_config_fnc_getBool, hull_config_fnc_getNumber];
+    _typeFunctions = CONFIG_TYPE_FUNCTIONS;
     _rawVariables = [
-        ["ace_sys_repair_default_tyres", TYPE_BOOL],
-        ["ace_sys_wounds_enabled", TYPE_BOOL],
-        ["ace_sys_wounds_all_medics", TYPE_BOOL],
-        ["ace_sys_wounds_leftdam", TYPE_NUMBER],
-        ["ace_sys_aitalk_enabled", TYPE_BOOL],
-        ["ace_sys_viewblock_blockgrass", TYPE_BOOL],
-        ["ace_sys_destruction_enable_cookoff", TYPE_BOOL],
-        ["ace_settings_enable_vd_change", TYPE_BOOL],
-        ["ace_sys_aitalk_talkforplayer", TYPE_BOOL],
-        ["ACE_sys_tracking_MarkersEnabled", TYPE_BOOL],
-        ["ACE_sys_tracking_markers_enabled_override", TYPE_BOOL],
-        ["ace_viewdistance_limit", TYPE_NUMBER]
+        ["ace_sys_repair_default_tyres", CONFIG_TYPE_BOOL],
+        ["ace_sys_wounds_enabled", CONFIG_TYPE_BOOL],
+        ["ace_sys_wounds_all_medics", CONFIG_TYPE_BOOL],
+        ["ace_sys_wounds_leftdam", CONFIG_TYPE_NUMBER],
+        ["ace_sys_aitalk_enabled", CONFIG_TYPE_BOOL],
+        ["ace_sys_viewblock_blockgrass", CONFIG_TYPE_BOOL],
+        ["ace_sys_destruction_enable_cookoff", CONFIG_TYPE_BOOL],
+        ["ace_settings_enable_vd_change", CONFIG_TYPE_BOOL],
+        ["ace_sys_aitalk_talkforplayer", CONFIG_TYPE_BOOL],
+        ["ACE_sys_tracking_MarkersEnabled", CONFIG_TYPE_BOOL],
+        ["ACE_sys_tracking_markers_enabled_override", CONFIG_TYPE_BOOL],
+        ["ace_viewdistance_limit", CONFIG_TYPE_NUMBER]
     ];
 
     {
