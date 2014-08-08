@@ -1,7 +1,5 @@
 #include "hull_macros.h"
 
-#define LOGGING_LEVEL_ERROR
-#define LOGGING_TO_RPT
 #include "logbook.h"
 
 
@@ -19,6 +17,17 @@ hull_mission_fnc_init = {
     [] call hull_mission_fnc_readMissionParamValues;
     [] call hull_mission_fnc_setEnviroment;
     hull_mission_safetyTimerAbort = false;
+    if (!isDedicated) then {
+        [] call hull_mission_fnc_clientInit
+    };
+};
+
+hull_mission_fnc_clientInit = {
+    DEBUG("hull.mission.jip",FMT_1("CBA SLX_XEH_MACHINE='%1'",SLX_XEH_MACHINE));
+    hull_mission_isJip = SLX_XEH_MACHINE select 1;
+    if (hull_mission_isJip) then {
+        [] call hull_mission_fnc_getJipSync;
+    };
 };
 
 hull_mission_fnc_evaluateParams = {
@@ -59,9 +68,11 @@ hull_mission_fnc_getWeather = {
     if (isNil {hull_mission_weather}) then {
         hull_mission_weather = [0, 0, 0];
     };
-    if (hull_mission_weather select 0 == -1) then {
+    if (hull_mission_weather select 0 == -1 && {isServer}) then {
         DECLARE(_weathers) = ["MissionParams", "weather"] call hull_config_fnc_getArray;
         hull_mission_weather = _weathers select ((floor random ((count _weathers) - 1)) + 1);
+    } else {
+        hull_mission_weather = [0, 0, 0];
     };
 
     [hull_mission_weather select 0, hull_mission_weather select 1, hull_mission_weather select 2];
@@ -73,6 +84,7 @@ hull_mission_fnc_setWeather = {
     _time setOvercast (_weather select 0);
     _time setFog (_weather select 1);
     _time setRain (_weather select 2);
+    DEBUG("hull.mission.weather",FMT_1("Weather set to '%1'.",_weather));
 };
 
 hull_mission_fnc_setEnviroment = {
@@ -81,19 +93,28 @@ hull_mission_fnc_setEnviroment = {
 };
 
 hull_mission_fnc_broadcastEnviroment = {
+    sleep 0.1;
+    hull_mission_syncEnviroment = [overcast, fog, rain];
+    DEBUG("hull.mission.weather",FMT_1("Weather '%1' init is broadcasted.",hull_mission_syncEnviroment));
+    publicVariable "hull_mission_syncEnviroment";
     while {true} do {
         hull_mission_syncEnviroment = [overcast, fog, rain];
         publicVariable "hull_mission_syncEnviroment";
+        DEBUG("hull.mission.weather",FMT_1("Weather '%1' is broadcasted.",hull_mission_syncEnviroment));
         sleep 60;
     };
 };
 
 hull_mission_fnc_addPlayerEHs = {
     "hull_mission_syncEnviroment" addPublicVariableEventHandler {
-        [10, _this select 1] call hull_mission_fnc_setWeather;
+        DEBUG("hull.mission.weather",FMT_1("Weather is received '%1'.",_this select 1));
+        hull_mission_weather = _this select 1;
+        [0, _this select 1] call hull_mission_fnc_setWeather;
     };
-    "hull_mission_jipPacket" addPublicVariableEventHandler {
-        (_this select 1) call hull_mission_fnc_receiveJipState;
+    if (hull_mission_isJip) then {
+        "hull_mission_jipPacket" addPublicVariableEventHandler {
+            (_this select 1) call hull_mission_fnc_receiveJipSync;
+        };
     };
     "hull_mission_safetyTimer" addPublicVariableEventHandler {
         (_this select 1) call hull_mission_fnc_handleSafetyTimeChange;
@@ -103,7 +124,7 @@ hull_mission_fnc_addPlayerEHs = {
 hull_mission_fnc_addServerEHs = {
     if (isDedicated) then {
         "hull_mission_jipPacket" addPublicVariableEventHandler {
-            (_this select 1) call hull_mission_fnc_sendJipState;
+            (_this select 1) call hull_mission_fnc_sendJipSync;
         };
     };
     "hull_mission_safetyTimerAbort" addPublicVariableEventHandler {
@@ -178,39 +199,32 @@ hull_mission_fnc_addHostSafetyTimerStopAction = {
     };
 };
 
-hull_mission_fnc_getJipState = {
-    hull_mission_jipPacket = [player, time];
-    DEBUG("hull.mission.jip",FMT_2("Sending JIP state request for server from client '%1' with time '%2'.",player,time));
-    publicVariableServer "hull_mission_jipPacket";
+hull_mission_fnc_getJipSync = {
+    if (hull_mission_isJip) then {
+        hull_mission_jipPacket = [player];
+        DEBUG("hull.mission.jip",FMT_2("Sending JIP state request for server from client '%1' with time '%2'.",player,time));
+        publicVariableServer "hull_mission_jipPacket";
+    };
 };
 
-hull_mission_fnc_sendJipState = {
-    FUN_ARGS_2(_client,_clientTime);
+hull_mission_fnc_sendJipSync = {
+    FUN_ARGS_1(_client);
 
-    DEBUG("hull.mission.jip",FMT_4("Sending JIP state for client '%1' with client time '%2' and server time '%3'. Client's JIP state is '%5'.",_client,_clientTime,time,time != 0 && _clientTime > 0));
-    DECLARE(_isJip) = time != 0 && _clientTime > 0;
-    hull_mission_jipPacket = [_isJip];
-    if (_isJip) then {
-        DECLARE(_weather) = [overcast, fog, rain];
-        PUSH(hull_mission_jipPacket,date);
-        PUSH(hull_mission_jipPacket,_weather);
-        PUSH(hull_mission_jipPacket,hull_mission_safetyTimer);
-        PUSH(hull_mission_jipPacket,hull_mission_safetyTimerAbort);
-    };
-    DEBUG("hull.mission.jip",FMT_2("Sending JIP state for client '%1' with packet '%2'.",_client,hull_mission_jipPacket));
+    hull_mission_jipPacket = [date];
+    DECLARE(_weather) = [overcast, fog, rain];
+    PUSH(hull_mission_jipPacket,_weather);
+    PUSH(hull_mission_jipPacket,hull_mission_safetyTimer);
+    PUSH(hull_mission_jipPacket,hull_mission_safetyTimerAbort);
+    DEBUG("hull.mission.jip",FMT_2("Sending JIP sync for client '%1' with packet '%2'.",_client,hull_mission_jipPacket));
     (owner _client) publicVariableClient "hull_mission_jipPacket";
 };
 
-hull_mission_fnc_receiveJipState = {
-    FUN_ARGS_1(_isJip);
+hull_mission_fnc_receiveJipSync = {
+    FUN_ARGS_4(_date,_weather,_safetyTimer,_safetyTimerAbort);
 
-    DEBUG("hull.mission.jip",FMT_2("Received JIP state from server for client '%1' with JIP state '%2'.",owner player,_isJip));
-    hull_mission_isJip = _isJip;
-    if (_isJip) then {
-        setDate (_this select 1);
-        [10, (_this select 2)] call hull_mission_fnc_setWeather;
-        hull_mission_safetyTimer = _this select 3;
-        hull_mission_safetyTimerAbort = _this select 4;
-        DEBUG("hull.mission.jip",FMT_2("Client '%1' is JIP, setting environment and safety timer from packet '%2'.",owner player,_this));
-    };
+    DEBUG("hull.mission.jip",FMT_2("Received JIP sync '%1' from server for client '%2'.",owner player,_this));
+    setDate _date;
+    [0, _weather] call hull_mission_fnc_setWeather;
+    hull_mission_safetyTimer = _safetyTimer;
+    hull_mission_safetyTimerAbort = _safetyTimerAbort;
 };
