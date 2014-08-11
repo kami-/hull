@@ -111,7 +111,7 @@ class AKM {
             {"HandGrenade_East", 1},
             {"SmokeShell", 1}
         };
-        items[] = {"Binocular"};
+        items[] = {"ACRE_PRC343", "Binocular"};
     };
 
     class RAT : Rifleman {

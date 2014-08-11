@@ -111,7 +111,7 @@ class HK416 {
             {"HandGrenade_West", 1},
             {"SmokeShell", 1}
         };
-        items[] = {"Binocular"};
+        items[] = {"ACRE_PRC343", "Binocular"};
     };
 
     class RAT : Rifleman {
