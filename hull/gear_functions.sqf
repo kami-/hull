@@ -8,6 +8,7 @@ hull_gear_fnc_preInit = {
     hull_gear_unitBaseClass = ["Gear", "unitBaseClass"] call hull_config_fnc_getText;
     hull_gear_vehicleBaseClass = ["Gear", "vehicleBaseClass"] call hull_config_fnc_getText;
     [] call hull_gear_fnc_addEventHandlers;
+    DEBUG("hull.gear","Gear functions preInit finished.");
 };
 
 hull_gear_fnc_addEventHandlers = {
@@ -52,6 +53,7 @@ hull_gear_fnc_assignUnitInit = {
     removeBackpack _unit;
     _unit setVariable ["ace_sys_wounds_no_medical_gear", true, false];
     TRY_ADD_WEAPON(_unit,"ACE_Earplugs");
+    DEBUG("hull.gear.assign",FMT_1("Initialized unit '%1' gear.",_unit));
 };
 
 hull_gear_fnc_assignVehicleInit = {
@@ -59,6 +61,7 @@ hull_gear_fnc_assignVehicleInit = {
 
     clearMagazineCargoGlobal _vehicle;
     clearWeaponCargoGlobal _vehicle;
+    DEBUG("hull.gear.assign",FMT_1("Initialized vehicle '%1' gear.",_vehicle));
 };
 
 hull_gear_fnc_getTemplate = {
@@ -113,6 +116,7 @@ hull_gear_fnc_assignUnitTemplate = {
     ];
     [_unit, _class, _template, _assignables] call hull_gear_fnc_assignObjectTemplate;
     _unit selectWeapon primaryWeapon _unit;
+    DEBUG("hull.gear.assign",FMT_3("Assigned gear class '%1' from template '%2' to unit '%3'.",_class,_template,_unit));
 };
 
 hull_gear_fnc_assignVehicleTemplate = {
@@ -124,6 +128,7 @@ hull_gear_fnc_assignVehicleTemplate = {
         ["items",           CONFIG_TYPE_ARRAY,  hull_gear_fnc_assignVehicleWeapons]
     ];
     [_vehicle, _class, _template, _assignables] call hull_gear_fnc_assignObjectTemplate;
+    DEBUG("hull.gear.assign",FMT_3("Assigned gear class '%1' from template '%2' to vehicle '%3'.",_class,_template,_vehicle));
 };
 
 hull_gear_fnc_assignObjectTemplate = {
@@ -131,7 +136,6 @@ hull_gear_fnc_assignObjectTemplate = {
 
     {
         DECLARE(_configValue) = ["Gear", _template, _class, _x select 0] call (CONFIG_TYPE_FUNCTIONS select (_x select 1));
-        DEBUG("hull.gear.assign",FMT_3("assignable='%1'; type='%2'; value='%3'",_x select 0, _x select 1,_configValue));
         [_object, _configValue] call (_x select 2);
     } foreach _assignables;
     [_object, _class, _template] call compile (["Gear", _template, _class, "code"] call hull_config_fnc_getText);
@@ -142,6 +146,7 @@ hull_gear_fnc_assignRuck = {
 
     _unit addWeapon _ruck;
     [_unit, _ruck] call ACE_fnc_PutWeaponOnBack;
+    TRACE("hull.gear.assign",FMT_2("Assigned ruck '%1' to unit '%2'.",_ruck,_unit));
 };
 
 hull_gear_fnc_assignMagazines = {
@@ -152,6 +157,7 @@ hull_gear_fnc_assignMagazines = {
             _unit addMagazine (_x select 0);
         };
     } foreach _magazines;
+    TRACE("hull.gear.assign",FMT_2("Assigned magazines '%1' to unit '%2'.",_magazines,_unit));
 };
 
 hull_gear_fnc_assignVehicleMagazines = {
@@ -160,6 +166,7 @@ hull_gear_fnc_assignVehicleMagazines = {
     {
         _vehicle addMagazineCargoGlobal _x;
     } foreach _magazines;
+    TRACE("hull.gear.assign",FMT_2("Assigned magazines '%1' to vehicle '%2'.",_magazines,_vehicle));
 };
 
 hull_gear_fnc_assignWeapons = {
@@ -168,6 +175,7 @@ hull_gear_fnc_assignWeapons = {
     {
         _unit addWeapon _x;
     } foreach _weapons;
+    TRACE("hull.gear.assign",FMT_2("Assigned weapons '%1' to unit '%2'.",_weapons,_unit));
 };
 
 hull_gear_fnc_assignVehicleWeapons = {
@@ -176,6 +184,7 @@ hull_gear_fnc_assignVehicleWeapons = {
     {
         _vehicle addWeaponCargoGlobal _x;
     } foreach _weapons;
+    TRACE("hull.gear.assign",FMT_2("Assigned weapons '%1' to vehicle '%2'.",_weapons,_vehicle));
 };
 
 hull_gear_fnc_assignRuckWeapons = {
@@ -184,7 +193,9 @@ hull_gear_fnc_assignRuckWeapons = {
     {
         [_unit, _x select 0, _x select 1] call ACE_fnc_PackWeapon;
     } foreach _ruckWeapons;
+    TRACE("hull.gear.assign",FMT_2("Assigned ruck weapons '%1' to unit '%2'.",_ruckWeapons,_unit));
     _unit setVariable ["ACE_RuckWepContents", _unit getVariable ["ACE_RuckWepContents", []], true];
+    TRACE("hull.gear.assign",FMT_1("Broadcasted unit '%1' ruck weapons to all machines.",_unit));
 };
 
 hull_gear_fnc_assignRuckMagazines = {
@@ -193,7 +204,9 @@ hull_gear_fnc_assignRuckMagazines = {
     {
         [_unit, _x select 0, _x select 1] call ACE_fnc_PackMagazine;
     } foreach _ruckMagazines;
+    TRACE("hull.gear.assign",FMT_2("Assigned ruck magazines '%1' to unit '%2'.",_ruckMagazines,_unit));
     _unit setVariable ["ACE_RuckMagContents", _unit getVariable ["ACE_RuckMagContents", []], true];
+    TRACE("hull.gear.assign",FMT_1("Broadcasted unit '%1' ruck magazines to all machines.",_unit));
 };
 
 hull_gear_fnc_assignNonRadioItems = {
@@ -204,6 +217,7 @@ hull_gear_fnc_assignNonRadioItems = {
             TRY_ADD_WEAPON(_unit,_x);
         };
     } foreach _items;
+    TRACE("hull.gear.assign",FMT_2("Assigned non-radio items '%1' to unit '%2'.",_items,_unit));
 };
 
 hull_gear_fnc_tryAssignRadios = {
@@ -214,6 +228,7 @@ hull_gear_fnc_tryAssignRadios = {
     _gearTemplate = _unit getVariable "hull_gear_template";
     if (!isNil {_gearClass} && {!isNil {_gearTemplate}}) then {
         [_unit, ["Gear", _gearTemplate, _gearClass, "items"] call hull_config_fnc_getArray] call hull_gear_fnc_assignRadios;
+        DEBUG("hull.gear.assign",FMT_1("Assigned radios to unit '%1'.",_unit));
     };
     ["gear.radio.assigned", [_unit]] call hull_event_fnc_emitEvent;
 };
@@ -225,6 +240,7 @@ hull_gear_fnc_assignRadios = {
     {
         _unit addWeapon _x;
     } foreach ([_items] call hull_gear_fnc_getRadios);
+    TRACE("hull.gear.assign",FMT_2("Assigned radios '%1' to unit '%2'.",[_items] call hull_gear_fnc_getRadios,_unit));
 };
 
 hull_gear_fnc_removeRadios = {
@@ -235,6 +251,7 @@ hull_gear_fnc_removeRadios = {
             _unit removeWeapon _x;
         };
     } foreach (weapons _unit);
+    TRACE("hull.gear.assign",FMT_1("Removed radios from unit '%1'.",_unit));
 };
 
 hull_gear_fnc_getRadios = {
@@ -255,7 +272,9 @@ hull_gear_fnc_assignIFAK = {
     FUN_ARGS_2(_unit,_ifak);
 
     [_unit, _ifak select 0, _ifak select 1, _ifak select 2, true] call ACE_fnc_PackIFAK;
+    TRACE("hull.gear.assign",FMT_2("Assigned IFAK array '%1' to unit '%2'.",_ifak,_unit));
     _unit setVariable ["ACE_IFAK_Contents", _unit getVariable ["ACE_IFAK_Contents", [0,0,0]], true];
+    TRACE("hull.gear.assign",FMT_1("Broadcasted unit '%1' IFAK array to all machines.",_unit));
 };
 
 hull_gear_fnc_validateTemplate = {
