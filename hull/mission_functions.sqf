@@ -1,5 +1,6 @@
 #include "hull_macros.h"
 
+#include "\userconfig\hull\log\mission.h"
 #include "logbook.h"
 
 

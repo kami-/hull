@@ -1,5 +1,9 @@
 #include "hull_macros.h"
 
+#include "\userconfig\hull\log\settings.h"
+#include "logbook.h"
+
+
 hull_settings_fnc_preInit = {
     [] call hull_settings_fnc_addEventHandlers;
 };

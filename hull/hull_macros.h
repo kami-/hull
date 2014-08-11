@@ -1,6 +1,8 @@
 #ifndef HULL_MACROS_H
 #define HULL_MACROS_H
 
+#include "\userconfig\hull\log\global.h"
+
 #define HULL_VERSION                    "0.5.1"
 
 #define CONCAT_ADDON_PATH(FILE)         x\ark\addons\hull\FILE

@@ -1,7 +1,6 @@
 #include "hull_macros.h"
 
-#define LOGGING_LEVEL_WARN
-#define LOGGING_TO_RPT
+#include "\userconfig\hull\log\unit.h"
 #include "logbook.h"
 
 

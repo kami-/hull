@@ -1,8 +1,8 @@
 #include "hull_macros.h"
 
-#define LOGGING_LEVEL_INFO
-#define LOGGING_TO_RPT
+#include "\userconfig\hull\log\preinit.h"
 #include "logbook.h"
+
 
 hull_isInitialized = false;
 

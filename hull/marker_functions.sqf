@@ -1,5 +1,9 @@
 #include "hull_macros.h"
 
+#include "\userconfig\hull\log\marker.h"
+#include "logbook.h"
+
+
 hull_marker_fnc_preInit = {
     if (!isDedicated) then {
         hull_marker_rawGroupMarkers = [];
