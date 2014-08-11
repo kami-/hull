@@ -1,5 +1,9 @@
 #include "hull_macros.h"
 
+#include "\userconfig\hull\log\postinit.h"
+#include "logbook.h"
+
+
 if (hull_isEnabled) then {
     [] call hull_settings_fnc_init;
     [] call hull_mission_fnc_init;

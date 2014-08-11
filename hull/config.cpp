@@ -19,7 +19,7 @@ class Extended_PreInit_EventHandlers {
 
 class Extended_PostInit_EventHandlers {
     class Hull {
-        init = "[] call compile preProcessFileLineNumbers 'x\ark\addons\hull\hull_init.sqf';";
+        init = "[] call compile preProcessFileLineNumbers 'x\ark\addons\hull\hull_postinit.sqf';";
     };
 };
 
