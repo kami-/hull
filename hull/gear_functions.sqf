@@ -155,7 +155,7 @@ hull_gear_fnc_assignMagazines = {
 };
 
 hull_gear_fnc_assignVehicleMagazines = {
-    FUN_ARGS_2(_unit,_magazines);
+    FUN_ARGS_2(_vehicle,_magazines);
 
     {
         _vehicle addMagazineCargoGlobal _x;
@@ -171,7 +171,7 @@ hull_gear_fnc_assignWeapons = {
 };
 
 hull_gear_fnc_assignVehicleWeapons = {
-    FUN_ARGS_2(_unit,_weapons);
+    FUN_ARGS_2(_vehicle,_weapons);
 
     {
         _vehicle addWeaponCargoGlobal _x;
