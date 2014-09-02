@@ -2,7 +2,7 @@ factions[] = {
     {"Default", "Default"},
     {"BIS_BAF", "L85"},
     {"BIS_CZ", "SA58"},
-    {"BIS_GER", "G36"},
+    {"BIS_GER", "HK416"},
     {"BIS_TK", "AK74"},
     {"BIS_TK_GUE", "AKM"},
     {"BIS_TK_INS", "AKM"},
