@@ -235,4 +235,13 @@
 //          private "_group"; _group = _x;
 #define DECLARE(VAR) private #VAR; VAR
 
+// Double quotes the given argument.
+// Example:
+//      GIVEN:
+//      WHEN:
+//          QOUTE(some_variable)
+//      THEN:
+//          "some_variable"
+#define QUOTE(VAR) #VAR
+
 #endif //HULL_MACROS_H
