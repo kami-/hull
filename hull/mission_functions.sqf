@@ -7,10 +7,11 @@
 hull_mission_fnc_preInit = {
     hull_mission_isJip = false;
     [] call hull_mission_fnc_addEventHandlers;
+    DEBUG("hull.mission","Mission functions preInit finished.");
 };
 
 hull_mission_fnc_addEventHandlers = {
-    ["player.initialized", hull_mission_fnc_getJipState] call hull_event_fnc_addEventHandler;
+    ["player.initialized", hull_mission_fnc_clientInit] call hull_event_fnc_addEventHandler;
 };
 
 hull_mission_fnc_init = {
@@ -18,17 +19,21 @@ hull_mission_fnc_init = {
     [] call hull_mission_fnc_readMissionParamValues;
     [] call hull_mission_fnc_setEnviroment;
     hull_mission_safetyTimerAbort = false;
-    if (!isDedicated) then {
-        [] call hull_mission_fnc_clientInit
-    };
+};
+
+hull_mission_fnc_serverInit = {
+    [] call hull_mission_fnc_addServerEHs;
+    [] spawn hull_mission_fnc_serverSafetyTimerLoop;
+    [] spawn hull_mission_fnc_broadcastEnviromentLoop;
+    DEBUG("hull.mission","Server init finished.");
 };
 
 hull_mission_fnc_clientInit = {
-    DEBUG("hull.mission.jip",FMT_1("CBA SLX_XEH_MACHINE='%1'",SLX_XEH_MACHINE));
     hull_mission_isJip = SLX_XEH_MACHINE select 1;
     if (hull_mission_isJip) then {
         [] call hull_mission_fnc_getJipSync;
     };
+    DEBUG("hull.mission","Client init finished.");
 };
 
 hull_mission_fnc_evaluateParams = {
@@ -39,6 +44,7 @@ hull_mission_fnc_evaluateParams = {
             _code = getText (missionConfigFile >> "Params" >> _name >> "code");
             call compile format [_code, _x];
         } foreach paramsArray;
+        TRACE("hull.mission.params",FMT_1("ParamsArray '%1' have been evaluated.",paramsArray));
     };
 };
 
@@ -53,28 +59,22 @@ hull_mission_fnc_readMissionParamValues = {
 };
 
 hull_mission_fnc_getDateTime = {
-    if (isNil {hull_mission_date}) then {
-        hull_mission_date = [2014, 1, 31];
-    };
-    if (isNil {hull_mission_timeOfDay}) then {
-        hull_mission_timeOfDay = [12, 0];
-    };
-
     [hull_mission_date select 0, hull_mission_date select 1, hull_mission_date select 2, hull_mission_timeOfDay select 0, hull_mission_timeOfDay select 1];
 };
 
 hull_mission_fnc_getWeather = {
-    if (isNil {hull_mission_weather}) then {
-        hull_mission_weather = [0, 0, 0];
-    };
     if (hull_mission_weather select 0 == -1 && {isServer}) then {
         DECLARE(_weathers) = ["MissionParams", "weather"] call hull_config_fnc_getArray;
         hull_mission_weather = _weathers select ((floor random ((count _weathers) - 1)) + 1);
+        TRACE("hull.mission.weather",FMT_1("Random weather was selected. Generated random weather '%1' for server.",hull_mission_weather));
     } else {
-        hull_mission_weather = [0, 0, 0];
+        if (!isDedicated && !isServer) then {
+            hull_mission_weather = [0, 0, 0];
+            TRACE("hull.mission.weather",FMT_1("Random weather was selected. Using default weather '%1' for client.",hull_mission_weather));
+        };
     };
 
-    [hull_mission_weather select 0, hull_mission_weather select 1, hull_mission_weather select 2];
+    hull_mission_weather;
 };
 
 hull_mission_fnc_setWeather = {
@@ -83,12 +83,12 @@ hull_mission_fnc_setWeather = {
     _time setOvercast (_weather select 0);
     _time setFog (_weather select 1);
     _time setRain (_weather select 2);
-    DEBUG("hull.mission.weather",FMT_1("Weather set to '%1'.",_weather));
 };
 
 hull_mission_fnc_setEnviroment = {
     setDate ([] call hull_mission_fnc_getDateTime);
     [0, [] call hull_mission_fnc_getWeather] call hull_mission_fnc_setWeather;
+    DEBUG("hull.mission.weather",FMT_2("Environment was set. Date to '%1' and weather to '%2'.",[] call hull_mission_fnc_getDateTime,[] call hull_mission_fnc_getWeather));
 };
 
 hull_mission_fnc_broadcastEnviroment = {
@@ -118,6 +118,7 @@ hull_mission_fnc_addPlayerEHs = {
     "hull_mission_safetyTimer" addPublicVariableEventHandler {
         (_this select 1) call hull_mission_fnc_handleSafetyTimeChange;
     };
+    DEBUG("hull.mission.ehs","Player event handlers were added.");
 };
 
 hull_mission_fnc_addServerEHs = {
@@ -129,14 +130,20 @@ hull_mission_fnc_addServerEHs = {
     "hull_mission_safetyTimerAbort" addPublicVariableEventHandler {
         [_this select 1] spawn hull_mission_fnc_serverSafetyTimerCountDown;
     };
+    DEBUG("hull.mission.ehs","Server event handlers were added.");
 };
 
 hull_mission_fnc_serverSafetyTimerLoop = {
     if (!isNil {hull_mission_safetyTimerEnd} && {hull_mission_safetyTimerEnd > 0}) then {
         hull_mission_safetyTimer = [false, -1];
+        DEBUG("hull.mission.safetytimer",FMT_1("Safety timer has been initialized with value '%1'.",hull_mission_safetyTimer));
         while {(hull_mission_safetyTimer select 1) < hull_mission_safetyTimerEnd && {!hull_mission_safetyTimerAbort}} do {
             hull_mission_safetyTimer set [1, (hull_mission_safetyTimer select 1) + 1];
             publicVariable "hull_mission_safetyTimer";
+            DEBUG("hull.mission.safetytimer",FMT_1("Safety timer has been published to clients with value '%1'.",hull_mission_safetyTimer));
+            if (!isDedicated) then {
+                hull_mission_safetyTimer call hull_mission_fnc_handleSafetyTimeChange;
+            };
             sleep 60;
         };
         if (!hull_mission_safetyTimerAbort) then {
@@ -150,9 +157,14 @@ hull_mission_fnc_serverSafetyTimerCountDown = {
 
     if (_isAborted) then {
         hull_mission_safetyTimer = [true, 10];
+        DEBUG("hull.mission.safetytimer",FMT_1("Safety timer has been aborted. Starting countdown from '%1' seconds.",hull_mission_safetyTimer select 1));
         for "_i" from 10 to 0 step -1 do {
             hull_mission_safetyTimer set [1, _i];
             publicVariable "hull_mission_safetyTimer";
+            TRACE("hull.mission.safetytimer",FMT_1("Safety timer has been published to clients with countdown time at '%1' seconds.",hull_mission_safetyTimer select 1));
+            if (!isDedicated) then {
+                hull_mission_safetyTimer call hull_mission_fnc_handleSafetyTimeChange;
+            };
             sleep 1;
         };
     };
@@ -162,17 +174,20 @@ hull_mission_fnc_clientSafetyTimerLoop = {
     if (!isNil {hull_mission_safetyTimerEnd} && {hull_mission_safetyTimerEnd > 0}) then {
         [] call hull_mission_fnc_addHostSafetyTimerStopAction;
         [player] call hull_unit_fnc_addFiredEHs;
+        DEBUG("hull.mission.safetytimer","Starting safety timer loop.");
         while {!([] call hull_mission_fnc_hasSafetyTimerEnded)} do {
             TRY_ADD_WEAPON(player,"ACE_Safe");
             player selectWeapon "ACE_Safe";
         };
         player removeEventHandler ["Fired", player getVariable "hull_eh_fired"];
+        DEBUG("hull.mission.safetytimer","Safety timer has ended. Removed fired EH.");
     };
 };
 
 hull_mission_fnc_handleSafetyTimeChange = {
     FUN_ARGS_2(_isCountDown,_timeValue);
 
+    DEBUG("hull.mission.safetytimer",FMT_1("Safety timer has been changed. Received value '%1'.",AS_ARRAY_2(_isCountDown,_timeValue)));
     DECLARE(_message) = "Game is not live. Waiting for host to start it. (%1 minutes)";
     if (_isCountDown) then {
         call {
@@ -193,8 +208,9 @@ hull_mission_fnc_hasSafetyTimerEnded = {
 };
 
 hull_mission_fnc_addHostSafetyTimerStopAction = {
-    if (serverCommandAvailable "#kick") then {
+    if (serverCommandAvailable "#kick" || {!isMultiplayer}) then {
         player addAction ["Disable weapon safety", ADDON_PATH(mission_host_safetytimer_stop.sqf), [], 3, false, false, "", "driver _target == _this && {!(hull_mission_safetyTimer select 0)} && {(hull_mission_safetyTimer select 1) < hull_mission_safetyTimerEnd}"];
+        DEBUG("hull.mission.safetytimer","Added safety timer abort action to player.");
     };
 };
 
@@ -223,6 +239,8 @@ hull_mission_fnc_receiveJipSync = {
 
     DEBUG("hull.mission.jip",FMT_2("Received JIP sync '%1' from server for client '%2'.",owner player,_this));
     setDate _date;
+    hull_mission_date = _date;
+    hull_mission_weather = _weather;
     [0, _weather] call hull_mission_fnc_setWeather;
     hull_mission_safetyTimer = _safetyTimer;
     hull_mission_safetyTimerAbort = _safetyTimerAbort;
