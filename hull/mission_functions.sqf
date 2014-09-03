@@ -43,14 +43,12 @@ hull_mission_fnc_evaluateParams = {
 };
 
 hull_mission_fnc_readMissionParamValues = {
-    if (!isNil {hull_mission_date}) then {
-        hull_mission_date = (["MissionParams", "date"] call hull_config_fnc_getArray) select hull_mission_date;
-    };
-    if (!isNil {hull_mission_timeOfDay}) then {
-        hull_mission_timeOfDay = (["MissionParams", "time"] call hull_config_fnc_getArray) select hull_mission_timeOfDay;
-    };
-    if (!isNil {hull_mission_weather}) then {
-        hull_mission_weather = (["MissionParams", "weather"] call hull_config_fnc_getArray) select hull_mission_weather;
+    INIT_MISSION_VAR(hull_mission_date,"date",AS_ARRAY_3(2014,1,31));
+    INIT_MISSION_VAR(hull_mission_timeOfDay,"time",AS_ARRAY_2(12,0));
+    INIT_MISSION_VAR(hull_mission_weather,"weather",AS_ARRAY_3(0,0,0));
+    if (isNil {hull_mission_safetyTimerEnd}) then {
+        hull_mission_safetyTimerEnd = 9999;
+        TRACE("hull.mission.safetytimer",FMT_1("Mission param 'hull_mission_safetyTimerEnd' was not set, using default '%1'.",hull_mission_safetyTimerEnd));
     };
 };
 

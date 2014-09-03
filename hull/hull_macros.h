@@ -38,6 +38,15 @@
         ["code", {isText _config}] \
     ]
 
+#define INIT_MISSION_VAR(VAR,PARAM_NAME,DEFAULT_VAL) \
+    if (!isNil {VAR}) then { \
+        VAR = (["MissionParams", PARAM_NAME] call hull_config_fnc_getArray) select VAR; \
+        TRACE("hull.mission.params",FMT_2("Mission param '%1' was set to '%2'.",QUOTE(VAR),VAR)); \
+    } else { \
+        VAR = DEFAULT_VAL; \
+        TRACE("hull.mission.datetime",FMT_2("Mission param '%1' was not set, using default '%2'.",QUOTE(VAR),VAR)); \
+    }
+
 // WARNING
 // Macros are sensitive for "," (comma), "(", ")" (parenthese) and " " (space).
 // Provide only the asked numbers of arguments, without additional commas and without spaces beetween commas.
