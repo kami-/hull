@@ -247,6 +247,7 @@ hull_gear_fnc_tryAssignRadios = {
 hull_gear_fnc_assignRadios = {
     FUN_ARGS_2(_unit,_items);
 
+    sleep 1;
     [_unit] call hull_gear_fnc_removeRadios;
     {
         _unit addWeapon _x;
