@@ -7,6 +7,7 @@
 hull_unit_fnc_init = {
     FUN_ARGS_3(_unit,_gearConfig,_markerConfig);
 
+    [_unit] call hull_settings_fnc_setUnitSettings;
     if (local _unit) then {
         [_unit, _gearConfig select 0, _gearConfig select 1] call hull_gear_fnc_assign;
         [_unit] call hull_unit_fnc_addEHs;
