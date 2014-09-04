@@ -9,7 +9,7 @@ hull_marker_fnc_preInit = {
         hull_marker_rawGroupMarkers = [];
         hull_marker_updatableMarkers = [];
         hull_marker_groups = [];
-        hull_marker_medics = [];
+        hull_marker_units = [];
         hull_marker_fireTeam = [];
         hull_marker_custom = [];
         hull_marker_defaultDelay = ["Marker", "defaultDelay"] call hull_config_fnc_getNumber;
@@ -52,6 +52,9 @@ hull_marker_fnc_addGroupAndUnitMarker = {
         };
         if (toLower _gearClass == "medic") exitWith {
             [_unit, "b_med", _markerText, _markerColor, ["Marker", "MedicMarker", "size"] call hull_config_fnc_getArray] call hull_marker_fnc_addUnitMarker;
+        };
+        if (toLower _gearClass == "xo") exitWith {
+            [_unit, "b_empty", _markerText, _markerColor, [1, 1]] call hull_marker_fnc_addUnitMarker;
         };
         [_unit, "b_empty", _markerText, _markerColor] call hull_marker_fnc_addGroupMarker;
     };
