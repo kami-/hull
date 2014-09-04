@@ -91,7 +91,7 @@ hull_mission_fnc_setEnviroment = {
     DEBUG("hull.mission.weather",FMT_2("Environment was set. Date to '%1' and weather to '%2'.",[] call hull_mission_fnc_getDateTime,[] call hull_mission_fnc_getWeather));
 };
 
-hull_mission_fnc_broadcastEnviroment = {
+hull_mission_fnc_broadcastEnviromentLoop = {
     sleep 0.1;
     hull_mission_syncEnviroment = [overcast, fog, rain];
     DEBUG("hull.mission.weather",FMT_1("Weather '%1' init is broadcasted.",hull_mission_syncEnviroment));
