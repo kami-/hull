@@ -157,6 +157,8 @@ hull_gear_fnc_assignRuck = {
 
     _unit addWeapon _ruck;
     [_unit, _ruck] call ACE_fnc_PutWeaponOnBack;
+    _unit setVariable ["ACE_RuckWepContents", [], true];
+    _unit setVariable ["ACE_RuckMagContents", [], true];
     TRACE("hull.gear.assign",FMT_2("Assigned ruck '%1' to unit '%2'.",_ruck,_unit));
 };
 
@@ -283,6 +285,7 @@ hull_gear_fnc_getRadios = {
 hull_gear_fnc_assignIFAK = {
     FUN_ARGS_2(_unit,_ifak);
 
+    _unit setVariable ["ACE_IFAK_Contents", [0,0,0], true];
     [_unit, _ifak select 0, _ifak select 1, _ifak select 2, true] call ACE_fnc_PackIFAK;
     TRACE("hull.gear.assign",FMT_2("Assigned IFAK array '%1' to unit '%2'.",_ifak,_unit));
     _unit setVariable ["ACE_IFAK_Contents", _unit getVariable ["ACE_IFAK_Contents", [0,0,0]], true];
