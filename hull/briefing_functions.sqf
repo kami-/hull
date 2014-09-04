@@ -6,6 +6,7 @@
 
 hull_briefing_fnc_preInit = {
     [] call hull_briefing_fnc_addEventHandlers;
+    DEBUG("hull.briefing","briefing functions preInit finished.");
 };
 
 hull_briefing_fnc_addEventHandlers = {
@@ -14,6 +15,7 @@ hull_briefing_fnc_addEventHandlers = {
 
 hull_briefing_fnc_addNotes = {
     [] call compile preprocessFile ADDON_PATH(briefing\hull.sqf);
+    DEBUG("hull.briefing","Added Hull to briefing notes.");
     [] call hull_briefing_fnc_addOrbat;
     [] call hull_briefing_fnc_addSideNotes;
 };
@@ -34,6 +36,7 @@ hull_briefing_fnc_addOrbat = {
         };
     } foreach hull_marker_groups;
     player createDiaryRecord ["Diary", ["ORBAT", _orbat]];
+    DEBUG("hull.briefing","Added ORBAT to briefing notes.");
 };
 
 hull_briefing_fnc_addSideNotes = {
@@ -45,5 +48,6 @@ hull_briefing_fnc_addSideNotes = {
         if (side player == CIVILIAN) exitWith {_briefingFile = ["Briefing", "civilian"] call hull_config_fnc_getText};
     };
     [] call compile preprocessFile _briefingFile;
+    DEBUG("hull.briefing","Added Side notes to briefing notes.");
 };
 

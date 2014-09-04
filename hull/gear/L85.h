@@ -119,7 +119,7 @@ class L85 {
     };
 
     class MMGG : Rifleman {
-        weapons[] = {"ACE_M60"};
+        weapons[] = {"BAF_L7A2_GPMG"};
         magazines[] = {
             {"100Rnd_762x51_M240", 5},
             {"SmokeShell", 1}

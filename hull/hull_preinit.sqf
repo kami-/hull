@@ -25,7 +25,6 @@ if (hull_isEnabled) then {
     hull_isInitialized = true;
     INFO("hull",FMT_1("Hull version '%1' has been successfully initialized.",HULL_VERSION));
 
-    [] call hull_settings_fnc_preInit;
     [] call hull_mission_fnc_preInit;
     [] call hull_marker_fnc_preInit;
     [] call hull_gear_fnc_preInit;

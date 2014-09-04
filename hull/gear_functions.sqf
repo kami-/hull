@@ -16,16 +16,16 @@ hull_gear_fnc_addEventHandlers = {
 };
 
 hull_gear_fnc_assign = {
-    FUN_ARGS_3(_unit,_manualClass,_manualTemplate);
+    FUN_ARGS_3(_unit,_manualClass,_manualTemplateOrFaction);
 
     if (_unit isKindOf "CAManBase") then {
         [
-            _unit, _manualClass, _manualTemplate, GEAR_UNIT_FIELDS,
+            _unit, _manualClass, _manualTemplateOrFaction, GEAR_UNIT_FIELDS,
             hull_gear_unitBaseClass, hull_gear_fnc_assignUnitInit, hull_gear_fnc_assignUnitTemplate
         ] call hull_gear_fnc_assignByType;
     } else {
         [
-            _unit, _manualClass, _manualTemplate, GEAR_VEHICLE_FIELDS,
+            _unit, _manualClass, [faction _unit, _manualTemplateOrFaction] call hull_gear_fnc_getVehicleTemplate, GEAR_VEHICLE_FIELDS,
             hull_gear_vehicleBaseClass, hull_gear_fnc_assignVehicleInit, hull_gear_fnc_assignVehicleTemplate
         ] call hull_gear_fnc_assignByType;
     };
@@ -71,6 +71,17 @@ hull_gear_fnc_getTemplate = {
     _template = _manualTemplate;
     if (isNil {_template} || {!isClass (["Gear", _manualTemplate] call hull_config_fnc_getConfig)}) then {
         _template = [_faction] call hull_gear_fnc_getTemplateByFaction;
+    };
+
+    _template;
+};
+
+hull_gear_fnc_getVehicleTemplate = {
+    FUN_ARGS_2(_faction,_manualTemplateOrFaction);
+
+    DECLARE(_template) = [_manualTemplateOrFaction] call hull_gear_fnc_getTemplateByFaction;
+    if (isNil {_template}) then {
+        _template = [_faction, _manualTemplateOrFaction] call hull_gear_fnc_getTemplate;
     };
 
     _template;
@@ -146,6 +157,8 @@ hull_gear_fnc_assignRuck = {
 
     _unit addWeapon _ruck;
     [_unit, _ruck] call ACE_fnc_PutWeaponOnBack;
+    _unit setVariable ["ACE_RuckWepContents", [], true];
+    _unit setVariable ["ACE_RuckMagContents", [], true];
     TRACE("hull.gear.assign",FMT_2("Assigned ruck '%1' to unit '%2'.",_ruck,_unit));
 };
 
@@ -236,6 +249,7 @@ hull_gear_fnc_tryAssignRadios = {
 hull_gear_fnc_assignRadios = {
     FUN_ARGS_2(_unit,_items);
 
+    sleep 1;
     [_unit] call hull_gear_fnc_removeRadios;
     {
         _unit addWeapon _x;
@@ -271,6 +285,7 @@ hull_gear_fnc_getRadios = {
 hull_gear_fnc_assignIFAK = {
     FUN_ARGS_2(_unit,_ifak);
 
+    _unit setVariable ["ACE_IFAK_Contents", [0,0,0], true];
     [_unit, _ifak select 0, _ifak select 1, _ifak select 2, true] call ACE_fnc_PackIFAK;
     TRACE("hull.gear.assign",FMT_2("Assigned IFAK array '%1' to unit '%2'.",_ifak,_unit));
     _unit setVariable ["ACE_IFAK_Contents", _unit getVariable ["ACE_IFAK_Contents", [0,0,0]], true];
@@ -309,6 +324,7 @@ hull_gear_fnc_validateTemplate = {
             _error = true;
         };
     } foreach _fields;
+    DEBUG("hull.gear.validate",FMT_2("There were %1 errors while validating unit '%2'.",if (_error) then {""} else {"no"},_unit));
 
     _error;
 };

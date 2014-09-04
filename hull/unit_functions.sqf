@@ -8,8 +8,11 @@ hull_unit_fnc_init = {
     FUN_ARGS_3(_unit,_gearConfig,_markerConfig);
 
     if (local _unit) then {
+        if (_unit isKindOf "CAManBase") then {
+            [_unit] call hull_settings_fnc_setUnitGlobalSettings;
+            [_unit] call hull_unit_fnc_addEHs;
+        };
         [_unit, _gearConfig select 0, _gearConfig select 1] call hull_gear_fnc_assign;
-        [_unit] call hull_unit_fnc_addEHs;
     };
     if (!isNil {_markerConfig} && {!isDedicated}) then {
         [_unit, _markerConfig select 0, _markerConfig select 1] call hull_marker_fnc_initMarker;
@@ -21,6 +24,7 @@ hull_unit_fnc_waitForPlayer = {
         !isNull player;
     };
     ["player.initialized", [player]] call hull_event_fnc_emitEvent;
+    DEBUG("hull.unit.player","Player is initialized.");
 };
 
 hull_unit_fnc_playerInit = {
@@ -48,13 +52,11 @@ hull_unit_fnc_foreachNonPlayerUnits = {
 hull_unit_fnc_addEHs = {
     FUN_ARGS_1(_unit);
 
-    if (_unit isKindOf "CAManBase") then {
-        private "_ehId";
-        _ehId = _unit addEventHandler ["HandleDamage", {_this call hull_unit_fnc_friendlyFireEH;}];
-        _unit setVariable ["hull_eh_friendlyFire", _ehId];
-        _ehId = _unit addEventHandler ["Killed", {_this call hull_unit_fnc_killedEH;}];
-        _unit setVariable ["hull_eh_killed", _ehId];
-    };
+    private "_ehId";
+    _ehId = _unit addEventHandler ["HandleDamage", {_this call hull_unit_fnc_friendlyFireEH;}];
+    _unit setVariable ["hull_eh_friendlyFire", _ehId];
+    _ehId = _unit addEventHandler ["Killed", {_this call hull_unit_fnc_killedEH;}];
+    _unit setVariable ["hull_eh_killed", _ehId];
 };
 
 hull_unit_fnc_addFiredEHs = {
