@@ -182,6 +182,13 @@ hull_marker_fnc_addFireTeamMarker = {
     PUSH(hull_marker_fireTeam,_unit);
 };
 
+// Deprecated, ONLY for backwards compatibility with old missions
+hull_marker_fnc_addXoMarker = {
+    FUN_ARGS_1(_unit);
+
+    [_unit, side _unit, hull_marker_defaultDelay, "ICON", "b_empty", "ColorYellow", [1, 1], "XO"] call hull_marker_fnc_addCustomSideMarker;
+};
+
 hull_marker_fnc_addCustomSideMarker = {
     FUN_ARGS_2(_object,_side);
 
