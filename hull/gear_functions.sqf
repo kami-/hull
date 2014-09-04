@@ -309,7 +309,7 @@ hull_gear_fnc_validateTemplate = {
 
     _template = [faction _unit, _manualTemplate] call hull_gear_fnc_getTemplate;
     if (!_error && {!isClass (["Gear", _template, _manualClass] call hull_config_fnc_getConfig)}) then {
-        WARN("hull.gear.validate",FMT_4("Class '%1' not found in gear template '%2', on unit '%3'! Using defalut '%4' instead.",_manualClass,_template,_unit,_baseClass));
+        WARN("hull.gear.validate",FMT_4("Class '%1' not found in gear template '%2', on unit '%3'! Using default '%4' instead.",_manualClass,_template,_unit,_baseClass));
         _manualClass = _baseClass;
     };
     if (!_error && {!isClass (["Gear", _template, _manualClass] call hull_config_fnc_getConfig)}) then {
