@@ -3,11 +3,6 @@
 #include "\userconfig\hull\log\settings.h"
 #include "logbook.h"
 
-
-hull_settings_fnc_preInit = {
-    DEBUG("hull.settings","Settings functions preInit finished.");
-};
-
 hull_settings_fnc_init = {
     [] call hull_settings_fnc_setStandardAceSettings;
     [] call hull_settings_fnc_setNonStandardAceSettings;
@@ -59,14 +54,14 @@ hull_settings_fnc_setNonStandardGeneralSettings = {
     };
 };
 
-hull_settings_fnc_setUnitSettings = {
+hull_settings_fnc_setUnitGlobalSettings = {
     FUN_ARGS_1(_unit);
 
-    _unit setVariable ["ace_sys_wounds_no_medical_gear", ["ACE", "ace_sys_wounds_no_medical_gear"] call hull_config_fnc_getBool];
-    DEBUG("hull.settings.ace",FMT_2("Unit '%1' variable 'ace_sys_wounds_no_medical_gear' is set to '%1'.",_unit,AS_ARRAY_2("ACE", "ace_sys_wounds_no_medical_gear") call hull_config_fnc_getBool));
+    _unit setVariable ["ace_sys_wounds_no_medical_gear", ["ACE", "ace_sys_wounds_no_medical_gear"] call hull_config_fnc_getBool, true];
+    DEBUG("hull.settings.ace",FMT_2("Unit '%1' variable 'ace_sys_wounds_no_medical_gear' is set to '%2'.",_unit,AS_ARRAY_2("ACE", "ace_sys_wounds_no_medical_gear") call hull_config_fnc_getBool));
     _unit addRating (["General", "addRating"] call hull_config_fnc_getNumber);
     DEBUG("hull.settings",FMT_3("Added '%1' rating to unit '%2'. New rating is '%3'.",AS_ARRAY_2("General", "addRating") call hull_config_fnc_getNumber,_unit,rating _unit));
-    _unit setVariable ["BIS_noCoreConversations", ["General", "BIS_noCoreConversations"] call hull_config_fnc_getBool];
+    _unit setVariable ["BIS_noCoreConversations", ["General", "BIS_noCoreConversations"] call hull_config_fnc_getBool, true];
     DEBUG("hull.settings",FMT_2("Unit '%1' variable 'BIS_noCoreConversations' is set to '%2'.",_unit,AS_ARRAY_2("General", "BIS_noCoreConversations") call hull_config_fnc_getBool));
 };
 
