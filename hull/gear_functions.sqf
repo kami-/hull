@@ -155,11 +155,13 @@ hull_gear_fnc_assignObjectTemplate = {
 hull_gear_fnc_assignRuck = {
     FUN_ARGS_2(_unit,_ruck);
 
-    _unit addWeapon _ruck;
-    [_unit, _ruck] call ACE_fnc_PutWeaponOnBack;
-    _unit setVariable ["ACE_RuckWepContents", [], true];
-    _unit setVariable ["ACE_RuckMagContents", [], true];
-    TRACE("hull.gear.assign",FMT_2("Assigned ruck '%1' to unit '%2'.",_ruck,_unit));
+    if (_ruck != "") then {
+        _unit addWeapon _ruck;
+        [_unit, _ruck] call ACE_fnc_PutWeaponOnBack;
+        _unit setVariable ["ACE_RuckWepContents", [], true];
+        _unit setVariable ["ACE_RuckMagContents", [], true];
+        TRACE("hull.gear.assign",FMT_2("Assigned ruck '%1' to unit '%2'.",_ruck,_unit));
+    };
 };
 
 hull_gear_fnc_assignMagazines = {
