@@ -76,6 +76,8 @@ FNC_ADD_ALL_EVENTS = {
 
     ["gear.assigned"] call FNC_ADD_EVENT;
     ["gear.radio.assigned"] call FNC_ADD_EVENT;
+
+    ["mission.safetytimer.ended"] call FNC_ADD_EVENT;
 };
 
 FNC_INIT = {
