@@ -242,10 +242,8 @@ hull_gear_fnc_tryAssignRadios = {
     _gearClass = _unit getVariable "hull_gear_class";
     _gearTemplate = _unit getVariable "hull_gear_template";
     if (!isNil {_gearClass} && {!isNil {_gearTemplate}}) then {
-        [_unit, ["Gear", _gearTemplate, _gearClass, "items"] call hull_config_fnc_getArray] call hull_gear_fnc_assignRadios;
-        DEBUG("hull.gear.assign",FMT_1("Assigned radios to unit '%1'.",_unit));
+        [_unit, ["Gear", _gearTemplate, _gearClass, "items"] call hull_config_fnc_getArray] spawn hull_gear_fnc_assignRadios;
     };
-    ["gear.radio.assigned", [_unit]] call hull_event_fnc_emitEvent;
 };
 
 hull_gear_fnc_assignRadios = {
@@ -253,10 +251,15 @@ hull_gear_fnc_assignRadios = {
 
     sleep 1;
     [_unit] call hull_gear_fnc_removeRadios;
+    DECLARE(_radios) = [_items] call hull_gear_fnc_getRadios;
     {
         _unit addWeapon _x;
-    } foreach ([_items] call hull_gear_fnc_getRadios);
+    } foreach _radios;
     TRACE("hull.gear.assign",FMT_2("Assigned radios '%1' to unit '%2'.",[_items] call hull_gear_fnc_getRadios,_unit));
+    DEBUG("hull.gear.assign",FMT_1("Assigned radios to unit '%1'.",_unit));
+    ["gear.radio.assigned", [_unit]] call hull_event_fnc_emitEvent;
+    sleep 30;
+    [_unit, _radios] call hull_gear_fnc_removeExtraRadios;
 };
 
 hull_gear_fnc_removeRadios = {
@@ -268,6 +271,28 @@ hull_gear_fnc_removeRadios = {
         };
     } foreach (weapons _unit);
     TRACE("hull.gear.assign",FMT_1("Removed radios from unit '%1'.",_unit));
+};
+
+hull_gear_fnc_removeExtraRadios = {
+    FUN_ARGS_2(_unit,_radios);
+
+    {
+        private ["_radio", "_assignedCount", "_currentCount", "_toBeRemovedCount"];
+        _radio = _x;
+        _assignedCount = {_radio == _x} count _radios;
+        _currentCount = {[_x, _radio] call acre_api_fnc_isKindOf} count items _unit;
+        _toBeRemovedCount = _currentCount - _assignedCount;
+        {
+            if ([_x, _radio] call acre_api_fnc_isKindOf) then {
+                _unit removeWeapon _x;
+                DEC(_toBeRemovedCount);
+            };
+            if (_toBeRemovedCount <= 0) exitWith {};
+        } foreach items _unit;
+        if (_currentCount - _assignedCount > 0) then {
+            _unit globalChat format ["Hull - Removed '%1' extra '%2' radios. Be sure to recheck '%2' channels!", _currentCount - _assignedCount, _radio];
+        };
+    } foreach _radios;
 };
 
 hull_gear_fnc_getRadios = {
