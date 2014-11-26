@@ -34,3 +34,28 @@ hull_config_fnc_getNumber = {
 hull_config_fnc_getBool = {
     getNumber (_this call hull_config_fnc_getConfig) == 1;
 };
+
+hull_config_fnc_getCustomConfig = {
+    DECLARE(_config) = _this select 0;
+    for "_i" from 1 to (count _this) - 1 do {
+        _config = _config >> (_this select _i);
+    };
+
+    _config;
+};
+
+hull_config_fnc_getCustomArray = {
+    getArray (_this call hull_config_fnc_getCustomConfig);
+};
+
+hull_config_fnc_getCustomText = {
+    getText (_this call hull_config_fnc_getCustomConfig);
+};
+
+hull_config_fnc_getCustomNumber = {
+    getNumber (_this call hull_config_fnc_getCustomConfig);
+};
+
+hull_config_fnc_getCustomBool = {
+    getNumber (_this call hull_config_fnc_getCustomConfig) == 1;
+};
