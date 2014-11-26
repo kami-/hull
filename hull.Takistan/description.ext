@@ -10,6 +10,16 @@ class Header
 respawn = 1;
 respawndelay = 3;
 
+corpseManagerMode = 1;
+corpseLimit = 70;
+corpseRemovalMinTime = 300;
+corpseRemovalMaxTime = 600;
+
+wreckManagerMode = 1;
+wreckLimit = 10;
+wreckRemovalMinTime = 300;
+wreckRemovalMaxTime = 600;
+
 class Params {
     class Hull_Date {
         title = "Moon Phase";
