@@ -33,6 +33,7 @@ hull_gc_fnc_monitorObjects = {
         DEBUG("hull.gc",FMT_1("Removable objects '%1'.",_objects));
         if (count _objects > _limit) then {
             {
+                _x setVariable ["hull_gc_lastCheck", time, false];
                 if ([_x, _minTime, _maxTime] call hull_gc_fnc_canRemoveObject) then {
                     DEBUG("hull.gc",FMT_1("Removing object '%1'.",_x));
                     deleteVehicle _x;
