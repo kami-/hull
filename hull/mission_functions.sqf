@@ -29,6 +29,7 @@ hull_mission_fnc_serverInit = {
 };
 
 hull_mission_fnc_clientInit = {
+    hull_mission_safetyTimerActionIds = [-1, -1, -1];
     hull_mission_isJip = SLX_XEH_MACHINE select 1;
     if (hull_mission_isJip) then {
         [] call hull_mission_fnc_getJipSync;
@@ -213,9 +214,26 @@ hull_mission_fnc_hasSafetyTimerEnded = {
 
 hull_mission_fnc_addHostSafetyTimerStopAction = {
     if (serverCommandAvailable "#kick" || {!isMultiplayer}) then {
-        player addAction ["Disable weapon safety", ADDON_PATH(mission_host_safetytimer_stop.sqf), [], 3, false, false, "", "driver _target == _this && {!(hull_mission_safetyTimer select 0)} && {(hull_mission_safetyTimer select 1) < hull_mission_safetyTimerEnd}"];
+        DECLARE(_actionId) = player addAction ['<t color="#428CE0">Disable weapon safety</t>', ADDON_PATH(mission_host_safetytimer_stop.sqf), ["activated"], 3, false, false, "", "driver _target == _this && {!(hull_mission_safetyTimer select 0)} && {(hull_mission_safetyTimer select 1) < hull_mission_safetyTimerEnd}"];
+        hull_mission_safetyTimerActionIds set [0, _actionId];
         DEBUG("hull.mission.safetytimer","Added safety timer abort action to player.");
     };
+};
+
+hull_mission_fnc_addSafetyTimerConfirmActions = {
+    DECLARE(_actionId) = player addAction ['<t color="#00FF00">Confirm weapon safety disabling</t>', ADDON_PATH(mission_host_safetytimer_stop.sqf), ["confirm"], 3, false, false, "", "driver _target == _this && {!(hull_mission_safetyTimer select 0)} && {(hull_mission_safetyTimer select 1) < hull_mission_safetyTimerEnd}"];
+    hull_mission_safetyTimerActionIds set [1, _actionId];
+    _actionId = player addAction ['<t color="#FF0000">Cancel weapon safety disabling</t>', ADDON_PATH(mission_host_safetytimer_stop.sqf), ["cancel"], 3, false, false, "", "driver _target == _this && {!(hull_mission_safetyTimer select 0)} && {(hull_mission_safetyTimer select 1) < hull_mission_safetyTimerEnd}"];
+    hull_mission_safetyTimerActionIds set [2, _actionId];
+};
+
+hull_mission_fnc_removeSafetyTimerActions = {
+    {
+        if (_x != -1) then {
+            player removeAction _x;
+            hull_mission_safetyTimerActionIds set [_forEachIndex, -1];
+        };
+    } foreach hull_mission_safetyTimerActionIds;
 };
 
 hull_mission_fnc_getJipSync = {
