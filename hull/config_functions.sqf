@@ -35,6 +35,28 @@ hull_config_fnc_getBool = {
     getNumber (_this call hull_config_fnc_getConfig) == 1;
 };
 
+hull_common_fnc_getEventFileResult = {
+    FUN_ARGS_2(_fileName,_arguments);
+
+    private ["_file", "_result"];
+    _file = ["Events", _fileName] call hull_config_fnc_getText;
+    _result = [];
+    if (_file != "") then {
+        _result = _arguments call compile preprocessFileLineNumbers _file;
+    };
+
+    _result;
+};
+
+hull_common_fnc_callEventFile = {
+    FUN_ARGS_2(_fileName,_arguments);
+
+    DECLARE(_file) = ["Events", _fileName] call hull_config_fnc_getText;
+    if (_file != "") then {
+        _arguments call compile preprocessFileLineNumbers _file;
+    };
+};
+
 hull_config_fnc_getCustomConfig = {
     DECLARE(_config) = _this select 0;
     for "_i" from 1 to (count _this) - 1 do {
