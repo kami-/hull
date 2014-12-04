@@ -253,7 +253,7 @@ hull_mission_fnc_sendJipSync = {
     PUSH(hull_mission_jipPacket,_weather);
     PUSH(hull_mission_jipPacket,hull_mission_safetyTimer);
     PUSH(hull_mission_jipPacket,hull_mission_safetyTimerAbort);
-    _customArguments = ["mission_jip_sending", []] call hull_common_fnc_getEventFileResult;
+    _customArguments = ["mission_jip_sending", [_client]] call hull_common_fnc_getEventFileResult;
     PUSH(hull_mission_jipPacket,_customArguments);
     DEBUG("hull.mission.jip",FMT_2("Sending JIP sync for client '%1' with packet '%2'.",_client,hull_mission_jipPacket));
     (owner _client) publicVariableClient "hull_mission_jipPacket";
