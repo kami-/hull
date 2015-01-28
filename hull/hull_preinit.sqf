@@ -24,6 +24,7 @@ if (hull_isEnabled) then {
     [] call compile preProcessFileLineNumbers ADDON_PATH(gc_functions.sqf);
 
     hull_isInitialized = true;
+    ["hull.initialized", []] call hull_event_fnc_emitEvent;
     INFO("hull",FMT_1("Hull version '%1' has been successfully initialized.",HULL_VERSION));
 
     [] call hull_mission_fnc_preInit;
