@@ -116,6 +116,7 @@ class Hull {
     };
 
     class GarbageCollector {
+        isEnabled = 1;
         canRemoveCorpses = 1;
         canRemoveWrecks = 1;
         canRemoveGroups = 1;

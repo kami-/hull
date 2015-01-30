@@ -19,6 +19,9 @@ hull_gc_fnc_preInit = {
 
 hull_gc_fnc_start = {
     if (hull_gc_isEnabled) then {
+        hull_gc_canRemoveCorpses = true;
+        hull_gc_canRemoveWrecks = true;
+        hull_gc_canRemoveGroups = true;
         [] spawn hull_gc_fnc_monitorCorpses;
         [] spawn hull_gc_fnc_monitorWrecks;
         [] spawn hull_gc_fnc_monitorGroups;
