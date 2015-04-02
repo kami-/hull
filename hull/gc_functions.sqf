@@ -3,6 +3,9 @@
 //#include "\userconfig\hull\log\gc.h"
 #include "logbook.h"
 
+#define GC_CAN_REMOVE(UNIT)                 (UNIT getVariable ["hull_gc_canRemove", true])
+
+
 
 hull_gc_fnc_preInit = {
     hull_gc_isEnabled = ["GarbageCollector", "isEnabled"] call hull_config_fnc_getBool;
@@ -18,6 +21,9 @@ hull_gc_fnc_preInit = {
 };
 
 hull_gc_fnc_start = {
+    {
+        _x setVariable ["hull_gc_canRemove", false];
+    } foreach playableUnits;
     if (hull_gc_isEnabled) then {
         hull_gc_canRemoveCorpses = true;
         hull_gc_canRemoveWrecks = true;
@@ -38,7 +44,7 @@ hull_gc_fnc_monitorCorpses = {
     while {hull_gc_canRemoveCorpses} do {
         DEBUG("hull.gc","Starting next corpse GC check.");
         [hull_gc_corpseLimit, hull_gc_corpseMaxTime, {_x isKindOf "Man"}] call hull_gc_fnc_tryRemovingUnits;
-        sleep hull_gc_corpseMaxTime * hull_gc_maxTimeModifier;
+        sleep (hull_gc_corpseMaxTime * hull_gc_maxTimeModifier);
     };
 };
 
@@ -46,7 +52,7 @@ hull_gc_fnc_monitorWrecks = {
     while {hull_gc_canRemoveWrecks} do {
         DEBUG("hull.gc","Starting next wreck GC check.");
         [hull_gc_wreckLimit, hull_gc_wreckMaxTime, {!(_x isKindOf "Man")}] call hull_gc_fnc_tryRemovingUnits;
-        sleep hull_gc_wreckMaxTime * hull_gc_maxTimeModifier;
+        sleep (hull_gc_wreckMaxTime * hull_gc_maxTimeModifier);
     };
 };
 
@@ -54,9 +60,9 @@ hull_gc_fnc_tryRemovingUnits = {
     FUN_ARGS_3(_limit,_maxTime,_isKindOfFunc);
 
     DECLARE(_units) = [];
-    FILTER_PUSH_ALL(_units,allDead,_isKindOfFunc);
-    DEBUG("hull.gc",FMT_1("'%1' dead units.",count _units));
-    if (count _units > _limit) then {
+    FILTER_PUSH_ALL(_units,allDead,{GC_CAN_REMOVE(_x) && _isKindOfFunc});
+    DEBUG("hull.gc",FMT_1("'%1' dead units.",{GC_CAN_REMOVE(_x)} count _units));
+    if ({GC_CAN_REMOVE(_x)} count _units > _limit) then {
         DEBUG("hull.gc",FMT_1("Limit '%1' reached, starting to remove units.",_limit));
         DECLARE(_removeCount) = 0;
         {
@@ -78,7 +84,7 @@ hull_gc_fnc_canRemoveUnit = {
     FUN_ARGS_2(_unit,_maxTime);
 
     private ["_canRemove", "_timeSinceFirstCheck"];
-    _canRemove = _unit getVariable ["hull_gc_canRemove", true];
+    _canRemove = GC_CAN_REMOVE(_unit);
     _timePassed = time - (_unit getVariable ["hull_gc_firstCheck", time]);
 
     _canRemove && {_timePassed >= _maxTime};
@@ -102,7 +108,7 @@ hull_gc_fnc_monitorGroups = {
         } foreach allGroups;
         DEBUG("hull.gc",FMT_2("Removing total '%1' groups of which '%2' are remote.",_removeCount,count _remoteGroups));
         [_remoteGroups] call hull_gc_fnc_removeRemoteGroups;
-        sleep hull_gc_groupMaxTime * hull_gc_maxTimeModifier;
+        sleep (hull_gc_groupMaxTime * hull_gc_maxTimeModifier);
     };
 };
 

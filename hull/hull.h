@@ -120,11 +120,11 @@ class Hull {
         canRemoveCorpses = 1;
         canRemoveWrecks = 1;
         canRemoveGroups = 1;
-        corpseLimit = 60;
+        corpseLimit = 40;
         corpseMaxTime = 600;
         wreckLimit = 10;
         wreckMaxTime = 600;
         groupMaxTime = 360;
-        maxTimeModifier = 0.75;
+        maxTimeModifier = 0.7;
     };
 };
