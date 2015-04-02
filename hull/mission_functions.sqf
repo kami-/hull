@@ -157,9 +157,10 @@ hull_mission_fnc_serverSafetyTimerCountDown = {
     FUN_ARGS_1(_isAborted);
 
     if (_isAborted) then {
-        hull_mission_safetyTimer = [true, 10];
+        DECLARE(_countDownLength) = if (isMultiplayer) then {10} else {0};
+        hull_mission_safetyTimer = [true, _countDownLength];
         DEBUG("hull.mission.safetytimer",FMT_1("Safety timer has been aborted. Starting countdown from '%1' seconds.",hull_mission_safetyTimer select 1));
-        for "_i" from 10 to 0 step -1 do {
+        for "_i" from _countDownLength to 0 step -1 do {
             hull_mission_safetyTimer set [1, _i];
             publicVariable "hull_mission_safetyTimer";
             TRACE("hull.mission.safetytimer",FMT_1("Safety timer has been published to clients with countdown time at '%1' seconds.",hull_mission_safetyTimer select 1));
@@ -210,6 +211,15 @@ hull_mission_fnc_handleSafetyTimeChange = {
 
 hull_mission_fnc_hasSafetyTimerEnded = {
     (hull_mission_safetyTimer select 0) && {(hull_mission_safetyTimer select 1) <= 0};
+};
+
+hull_mission_fnc_endSafetyTimer = {
+    hull_mission_safetyTimerAbort = true;
+    if (isServer) then {
+        [true] spawn hull_mission_fnc_serverSafetyTimerCountDown;
+    } else {
+        publicVariable "hull_mission_safetyTimerAbort";
+    };
 };
 
 hull_mission_fnc_addHostSafetyTimerStopAction = {
